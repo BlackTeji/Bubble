@@ -1,13 +1,13 @@
-import { http } from '../services/http.js';
-import { lessonStore } from '../stores/lessonStore.js';
-import { progressStore } from '../stores/progressStore.js';
-import { xpStore } from '../stores/xpStore.js';
-import { clientBus, CLIENT_EVENTS } from '../utils/eventBus.js';
+import { http } from '../../services/http.js';
+import { lessonStore } from '../../stores/lessonStore.js';
+import { progressStore } from '../../stores/progressStore.js';
+import { xpStore } from '../../stores/xpStore.js';
+import { clientBus, CLIENT_EVENTS } from '../../utils/eventBus.js';
 import { getMessage } from '../../../shared/lilibet/index.js';
-import { slideUp, floatXP } from '../utils/animations.js';
-import { handleSubmissionResult } from '../services/celebrationService.js';
-import { showToast } from '../components/Toast/index.js';
-import { navigateTo } from '../utils/transitions.js';
+import { slideUp, floatXP } from '../../utils/animations.js';
+import { handleSubmissionResult } from '../../services/celebrationService.js';
+import { showToast } from '../Toast/index.js';
+import { navigateTo } from '../../utils/transitions.js';
 
 const BLOCK_RENDERERS = {
     text: renderTextBlock,
@@ -157,7 +157,10 @@ export const renderBlocks = (blocks) => {
 export const mountLessonEngine = (container, lesson, options = {}) => {
     const content = lesson.content_json;
     if (!content) return;
-    
+
+    // Renders only the lesson content — the actions section (complete button,
+    // nav, Lilibet slot) is owned and rendered by lesson.js so navigation
+    // can live alongside it without this component needing to know about routing.
     container.innerHTML = `
     <article class="lesson-content" aria-label="${lesson.title}">
       ${content.intro ? `
@@ -186,6 +189,7 @@ const bindLessonInteractions = (container, lesson, options = {}) => {
     const totalInteractives = quizBlocks.length + fillBlocks.length;
 
     const checkCompletion = () => {
+        // If already completed, the complete button is hidden — nothing to unlock
         if (options.alreadyCompleted) return;
         if (quizzesAnswered + fillsSubmitted >= totalInteractives) {
             const btn = document.getElementById('lesson-complete-btn');
@@ -284,6 +288,8 @@ const bindLessonInteractions = (container, lesson, options = {}) => {
         });
     });
 
+    // Only bind the complete button on lessons not yet completed.
+    // Already-completed lessons show the next-prompt immediately; no re-submission needed.
     if (!options.alreadyCompleted) {
         const completeBtn = document.getElementById('lesson-complete-btn');
         completeBtn?.addEventListener('click', () => submitLessonCompletion(lesson, completeBtn, options));
@@ -305,6 +311,9 @@ const submitLessonCompletion = async (lesson, btn, options = {}) => {
         progressStore.updateLesson(lesson.id, { status: 'completed', score: 100 });
         clientBus.emit(CLIENT_EVENTS.LESSON_COMPLETED, { lessonId: lesson.id });
 
+        // Refetch actual XP from server — the event handlers (xpHandler) run
+        // asynchronously after the submission response, so we wait briefly
+        // then pull the confirmed total rather than estimating client-side.
         setTimeout(async () => {
             try {
                 const gamResult = await http.get('/gamification/summary');
@@ -312,6 +321,7 @@ const submitLessonCompletion = async (lesson, btn, options = {}) => {
                     xpStore.setFromXP(gamResult.data.xp);
                 }
             } catch {
+                // Non-critical — XP bar will update on next page load
             }
         }, 800);
 
