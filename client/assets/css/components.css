@@ -1,3 +1,6 @@
+/* ─── Navigation ─────────────────────────────────────────────────────────────
+   ──────────────────────────────────────────────────────────────────────────── */
+
 .nav {
     position: fixed;
     top: 0;
@@ -13,11 +16,18 @@
 .nav-inner {
     display: flex;
     align-items: center;
-    gap: var(--space-6);
+    gap: var(--space-3);
     height: 100%;
     max-width: var(--layout-max);
     margin: 0 auto;
-    padding: 0 var(--space-6);
+    padding: 0 var(--space-4);
+}
+
+@media (min-width: 769px) {
+    .nav-inner {
+        gap: var(--space-6);
+        padding: 0 var(--space-6);
+    }
 }
 
 .nav-brand {
@@ -25,9 +35,15 @@
     align-items: center;
     gap: var(--space-2);
     font-weight: var(--weight-bold);
-    font-size: var(--text-lg);
+    font-size: var(--text-base);
     letter-spacing: -0.02em;
     flex-shrink: 0;
+}
+
+@media (min-width: 769px) {
+    .nav-brand {
+        font-size: var(--text-lg);
+    }
 }
 
 .nav-brand-dot {
@@ -41,10 +57,16 @@
 }
 
 .nav-links {
-    display: flex;
-    align-items: center;
-    gap: var(--space-1);
-    flex: 1;
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .nav-links {
+        display: flex;
+        align-items: center;
+        gap: var(--space-1);
+        flex: 1;
+    }
 }
 
 .nav-link {
@@ -57,6 +79,7 @@
     font-weight: var(--weight-medium);
     color: var(--color-text-secondary);
     transition: all var(--duration-fast) var(--ease-smooth);
+    min-height: 44px;
 }
 
 .nav-link:hover {
@@ -72,14 +95,20 @@
 .nav-right {
     display: flex;
     align-items: center;
-    gap: var(--space-4);
+    gap: var(--space-3);
     margin-left: auto;
 }
 
 .nav-xp {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .nav-xp {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+    }
 }
 
 .nav-xp-level {
@@ -107,6 +136,7 @@
 .nav-avatar {
     width: 36px;
     height: 36px;
+    min-width: 36px;
     border-radius: var(--radius-full);
     background: var(--color-brand-light);
     color: var(--color-brand);
@@ -127,8 +157,8 @@
 .nav-user-menu {
     position: fixed;
     top: calc(var(--nav-height) + var(--space-2));
-    right: var(--space-6);
-    width: 220px;
+    right: var(--space-4);
+    width: min(220px, calc(100vw - var(--space-8)));
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
@@ -136,6 +166,12 @@
     box-shadow: var(--shadow-lg);
     z-index: var(--z-dropdown);
     display: none;
+}
+
+@media (min-width: 769px) {
+    .nav-user-menu {
+        right: var(--space-6);
+    }
 }
 
 .nav-user-menu--open {
@@ -159,6 +195,7 @@
     font-size: var(--text-sm);
     color: var(--color-text-secondary);
     transition: all var(--duration-fast) var(--ease-smooth);
+    min-height: 44px;
 }
 
 .nav-menu-item:hover {
@@ -166,15 +203,70 @@
     color: var(--color-text-primary);
 }
 
+
+/* ─── Mobile bottom navigation ───────────────────────────────────────────────
+   ──────────────────────────────────────────────────────────────────────────── */
+
+.mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    z-index: var(--z-overlay);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    display: flex;
+}
+
+.mobile-nav-link {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    color: var(--color-text-muted);
+    font-size: 10px;
+    font-weight: var(--weight-medium);
+    transition: color var(--duration-fast);
+    text-decoration: none;
+    min-height: 60px;
+}
+
+.mobile-nav-link svg {
+    width: 22px;
+    height: 22px;
+}
+
+.mobile-nav-link--active {
+    color: var(--color-brand);
+}
+
+
+/* ─── Toast ──────────────────────────────────────────────────────────────────
+   ──────────────────────────────────────────────────────────────────────────── */
+
 .toast-container {
     position: fixed;
-    bottom: var(--space-6);
-    right: var(--space-6);
+    bottom: 72px;
+    left: var(--space-3);
+    right: var(--space-3);
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
     z-index: var(--z-toast);
     pointer-events: none;
+}
+
+@media (min-width: 640px) {
+    .toast-container {
+        left: auto;
+        right: var(--space-6);
+        bottom: var(--space-6);
+        width: 360px;
+    }
 }
 
 .toast {
@@ -186,7 +278,6 @@
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
-    max-width: 360px;
     pointer-events: all;
     animation: slideInRight var(--duration-slow) var(--ease-spring) both;
 }
@@ -211,6 +302,11 @@
 }
 
 .toast-dismiss {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--color-text-muted);
     padding: var(--space-1);
     border-radius: var(--radius-sm);
@@ -222,6 +318,11 @@
 .toast-dismiss:hover {
     color: var(--color-text-primary);
 }
+
+
+/* ─── Lilibet message ────────────────────────────────────────────────────────
+   Appears on dashboard, lesson intros, quiz feedback, milestones.
+   ──────────────────────────────────────────────────────────────────────────── */
 
 .lilibet-message {
     display: flex;
@@ -236,6 +337,7 @@
 .lilibet-avatar {
     width: 32px;
     height: 32px;
+    min-width: 32px;
     border-radius: var(--radius-full);
     background: var(--color-brand);
     color: var(--color-text-inverse);
@@ -252,24 +354,4 @@
     line-height: var(--leading-relaxed);
     color: var(--color-brand-dark);
     font-style: italic;
-}
-
-@media (max-width: 640px) {
-    .nav-links {
-        display: none;
-    }
-
-    .nav-xp {
-        display: none;
-    }
-
-    .toast-container {
-        left: var(--space-4);
-        right: var(--space-4);
-        bottom: var(--space-4);
-    }
-
-    .toast {
-        max-width: 100%;
-    }
 }
