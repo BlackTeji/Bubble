@@ -19,6 +19,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <script type="module" src="/src/pages/onboarding.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(r => r.forEach(sw => sw.unregister()));
+        }
+    </script>
+
 </head>
 
 <body>
