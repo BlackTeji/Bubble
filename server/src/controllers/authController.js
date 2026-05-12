@@ -12,7 +12,6 @@ export const register = async (req, res, next) => {
             `SELECT id FROM users WHERE email = $1 OR username = $2`,
             [email.toLowerCase(), username.toLowerCase()]
         );
-
         if (existing.rows.length > 0) {
             return failure(res, 'ALREADY_EXISTS', 'An account with that email or username already exists.');
         }
