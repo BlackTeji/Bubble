@@ -241,10 +241,46 @@ const loadSidebarLessons = async (pathId) => {
 
 const renderCourseLessonList = async (slug) => {
     try {
-        const result = await http.get(`/courses/${slug}`);
-        return `<div class="content-container" style="padding: var(--space-8) var(--space-6)">
-      <h1>${result.data.course.title}</h1>
-    </div>`;
+        const courseResult = await http.get(`/courses/${slug}`);
+        const course = courseResult.data.course;
+        const paths = course.paths ?? [];
+
+        const pathsWithLessons = await Promise.all(
+            paths.map(async (path) => {
+                try {
+                    const r = await http.get(`/lessons?pathId=${path.id}`);
+                    return { ...path, lessons: r.data?.lessons ?? [] };
+                } catch {
+                    return { ...path, lessons: [] };
+                }
+            })
+        );
+
+        return `
+            <div class="content-container" style="padding: var(--space-8) var(--space-6); max-width: 740px; margin: 0 auto;">
+                <h1 style="margin-bottom: var(--space-8)">${course.title}</h1>
+                ${pathsWithLessons.map((path) => `
+                    <section style="margin-bottom: var(--space-10)">
+                        <h2 style="font-size: var(--text-lg); margin-bottom: var(--space-4); color: var(--color-text-secondary)">${path.title}</h2>
+                        <div>
+                            ${path.lessons.length
+                ? path.lessons.map((lesson) => `
+                                    <a href="/lesson.html?id=${lesson.id}&course=${slug}"
+                                       class="lesson-card ${lesson.status === 'completed' ? 'lesson-card--completed' : ''}">
+                                        <span class="lesson-card-icon">${lesson.status === 'completed' ? '✓' : '○'}</span>
+                                        <span class="lesson-card-body">
+                                            <span class="lesson-card-title">${lesson.title}</span>
+                                            <span class="lesson-card-meta text-muted">${lesson.estimated_mins ?? 5} min · +${lesson.xp_reward ?? 10} XP</span>
+                                        </span>
+                                    </a>
+                                `).join('')
+                : '<p class="text-muted" style="font-size: var(--text-sm)">No lessons yet.</p>'
+            }
+                        </div>
+                    </section>
+                `).join('')}
+            </div>
+        `;
     } catch {
         return `<p class="text-muted" style="padding: var(--space-8)">Course not found.</p>`;
     }
