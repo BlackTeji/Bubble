@@ -215,8 +215,9 @@ const bindLessonInteractions = (container, lesson) => {
 
                 quizEl.querySelectorAll('.quiz-option').forEach((btn, i) => {
                     btn.setAttribute('aria-checked', String(i === selectedIndex));
-                    btn.classList.add(i === correctIndex ? 'quiz-option--correct' : (i === selectedIndex ? 'quiz-option--wrong' : ''));
                     btn.disabled = true;
+                    if (i === correctIndex) btn.classList.add('quiz-option--correct');
+                    else if (i === selectedIndex) btn.classList.add('quiz-option--wrong');
                 });
 
                 const feedbackEl = container.querySelector(`#quiz-feedback-${blockIndex}`);
