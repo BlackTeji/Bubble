@@ -176,7 +176,7 @@ export const updateMe = async (req, res, next) => {
        SET display_name    = COALESCE($1, display_name),
            learning_goal   = COALESCE($2, learning_goal),
            skill_level     = COALESCE($3, skill_level),
-           onboarding_done = CASE WHEN $4 IS NOT NULL THEN $4 ELSE onboarding_done END,
+           onboarding_done = CASE WHEN $4::boolean IS NOT NULL THEN $4::boolean ELSE onboarding_done END,
            updated_at      = NOW()
        WHERE id = $5
        RETURNING id, email, username, display_name, avatar_url, current_xp, level, onboarding_done`,
