@@ -1,13 +1,13 @@
-import { http } from '../services/http.js';
-import { lessonStore } from '../stores/lessonStore.js';
-import { progressStore } from '../stores/progressStore.js';
-import { xpStore } from '../stores/xpStore.js';
-import { clientBus, CLIENT_EVENTS } from '../utils/eventBus.js';
-import { getMessage } from '../../../shared/lilibet/index.js';
-import { slideUp, floatXP } from '../utils/animations.js';
-import { handleSubmissionResult } from '../services/celebrationService.js';
-import { showToast } from '../components/Toast/index.js';
-import { navigateTo } from '../utils/transitions.js';
+import { http } from '../../services/http.js';
+import { lessonStore } from '../../stores/lessonStore.js';
+import { progressStore } from '../../stores/progressStore.js';
+import { xpStore } from '../../stores/xpStore.js';
+import { clientBus, CLIENT_EVENTS } from '../../utils/eventBus.js';
+import { getMessage } from '../../../../shared/lilibet/index.js';
+import { slideUp, floatXP } from '../../utils/animations.js';
+import { handleSubmissionResult } from '../../services/celebrationService.js';
+import { showToast } from '../Toast/index.js';
+import { navigateTo } from '../../utils/transitions.js';
 
 const BLOCK_RENDERERS = {
     text: renderTextBlock,
@@ -317,7 +317,6 @@ const submitLessonCompletion = async (lesson, btn) => {
                     xpStore.setFromXP(gamResult.data.xp);
                 }
             } catch {
-          
             }
         }, 800);
 

@@ -24,6 +24,8 @@ const SHARED_DIR = join(__dirname, '../../shared');
 export const createApp = () => {
     const app = express();
 
+    app.set('trust proxy', 1);
+
     app.use(helmet({
         contentSecurityPolicy: false,
     }));
