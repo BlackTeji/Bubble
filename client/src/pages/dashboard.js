@@ -1,16 +1,19 @@
 import { requireAuth, getMe, navigate } from '../services/authService.js';
 import { mountNav } from '../components/Nav/index.js';
+import { mountMobileNav } from '../components/MobileNav/index.js';
 import { mountToastSystem, toast } from '../components/Toast/index.js';
 import { userStore } from '../stores/userStore.js';
 import { xpStore } from '../stores/xpStore.js';
-import { progressStore } from '../stores/progressStore.js';
 import { http } from '../services/http.js';
 import { getMessage } from '../../shared/lilibet/index.js';
+import { skeletonDashboard } from '../utils/skeletons.js';
+import { renderDashboardError, ERROR_STATE_CSS } from '../utils/errorStates.js';
 
 if (!requireAuth()) throw new Error('Redirecting');
 
 mountToastSystem();
 mountNav(document.getElementById('nav-root'));
+mountMobileNav();
 
 const root = document.getElementById('page-root');
 
@@ -138,12 +141,13 @@ const addDashboardStyles = () => {
       display: inline-flex;
       font-size: var(--text-sm);
     }
+    ${ERROR_STATE_CSS}
   `;
     document.head.appendChild(style);
 };
 
 const loadDashboard = async () => {
-    root.innerHTML = `<div class="content-container" style="padding-top: var(--space-8)"><p class="text-muted">Loading…</p></div>`;
+    root.innerHTML = skeletonDashboard();
 
     try {
         const [user, gamResult, coursesResult] = await Promise.all([
@@ -165,8 +169,7 @@ const loadDashboard = async () => {
 
         renderDashboard({ user, gamification, courses });
     } catch (err) {
-        toast.error('Could not load your dashboard. Please refresh.');
-        console.error('[dashboard]', err);
+        root.innerHTML = renderDashboardError();
     }
 };
 

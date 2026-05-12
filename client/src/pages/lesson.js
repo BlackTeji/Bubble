@@ -1,5 +1,6 @@
 import { requireAuth } from '../services/authService.js';
 import { mountNav } from '../components/Nav/index.js';
+import { mountMobileNav } from '../components/MobileNav/index.js';
 import { mountToastSystem, toast } from '../components/Toast/index.js';
 import { mountLessonEngine } from '../components/LessonEngine/index.js';
 import { userStore } from '../stores/userStore.js';
@@ -8,11 +9,14 @@ import { lessonStore } from '../stores/lessonStore.js';
 import { http } from '../services/http.js';
 import { renderLessonCard } from '../components/LessonCard/index.js';
 import { progressStore } from '../stores/progressStore.js';
+import { skeletonLesson } from '../utils/skeletons.js';
+import { renderLessonError, ERROR_STATE_CSS } from '../utils/errorStates.js';
 
 if (!requireAuth()) throw new Error('Redirecting');
 
 mountToastSystem();
 mountNav(document.getElementById('nav-root'));
+mountMobileNav();
 
 const root = document.getElementById('page-root');
 const params = new URLSearchParams(window.location.search);
@@ -161,6 +165,7 @@ const addLessonStyles = () => {
       .comparison-block { grid-template-columns: 1fr; }
       .comparison-vs { display: none; }
     }
+    ${ERROR_STATE_CSS}
   `;
     document.head.appendChild(style);
 };
@@ -173,7 +178,7 @@ const loadLesson = async () => {
         return;
     }
 
-    root.innerHTML = `<div class="lesson-main" style="margin-top: var(--space-8)"><p class="text-muted">Loading lesson…</p></div>`;
+    root.innerHTML = skeletonLesson();
 
     try {
         const [lessonResult, progressResult, gamResult] = await Promise.all([
@@ -217,8 +222,7 @@ const loadLesson = async () => {
 
         loadSidebarLessons(lesson.path_id);
     } catch (err) {
-        toast.error('Could not load this lesson. Please try again.');
-        console.error('[lesson]', err);
+        root.innerHTML = renderLessonError();
     }
 };
 

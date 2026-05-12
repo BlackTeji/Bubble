@@ -1,5 +1,8 @@
+import { createLogger } from '../../utils/logger.js';
 import { eventBus, EVENTS } from '../eventBus.js';
 import { query } from '../../db/pool.js';
+
+const log = createLogger('analyticsHandler');
 
 const log = async (eventName, userId, metadata = {}) => {
     try {
@@ -9,7 +12,7 @@ const log = async (eventName, userId, metadata = {}) => {
             [userId ?? null, eventName, JSON.stringify(metadata)]
         );
     } catch (err) {
-        console.error(`[analyticsHandler] Failed to log ${eventName}:`, err.message);
+        log.error('Failed to log ${eventName}:', { error: err.message });
     }
 };
 

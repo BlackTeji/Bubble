@@ -1,5 +1,8 @@
+import { createLogger } from '../../utils/logger.js';
 import { eventBus, EVENTS } from '../eventBus.js';
 import { query } from '../../db/pool.js';
+
+const log = createLogger('streakHandler');
 
 eventBus.on(EVENTS.LESSON_COMPLETED, async ({ userId }) => {
     try {
@@ -64,6 +67,6 @@ eventBus.on(EVENTS.LESSON_COMPLETED, async ({ userId }) => {
             });
         }
     } catch (err) {
-        console.error('[streakHandler] Error:', err.message);
+        log.error('[streakHandler] Error:', err.message);
     }
 });

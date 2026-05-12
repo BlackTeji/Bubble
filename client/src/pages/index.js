@@ -5,7 +5,6 @@ import { HttpError } from '../services/http.js';
 mountToastSystem();
 
 if (isAuthenticated()) {
-    // Dashboard will redirect to onboarding if needed — let it handle that decision
     navigate('/dashboard.html');
 }
 

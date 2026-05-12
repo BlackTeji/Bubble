@@ -1,3 +1,4 @@
+import { createLogger } from '../../utils/logger.js';
 import { eventBus, EVENTS } from '../eventBus.js';
 import { getMessage } from '../../../../shared/lilibet/index.js';
 import { query } from '../../db/pool.js';
@@ -21,7 +22,7 @@ eventBus.on(EVENTS.SUBMISSION_COMPLETED, async ({ userId, isCorrect, isFirstAtte
         const message = getMessage(event, { isCorrect, isFirstAttempt, state });
         await logMessage(userId, event, message);
     } catch (err) {
-        console.error('[lilibetHandler] Error:', err.message);
+        log.error('[lilibetHandler] Error:', err.message);
     }
 });
 
@@ -30,7 +31,7 @@ eventBus.on(EVENTS.LESSON_COMPLETED, async ({ userId }) => {
         const message = getMessage('lesson_complete', {});
         await logMessage(userId, 'lesson_complete', message);
     } catch (err) {
-        console.error('[lilibetHandler] lesson.completed error:', err.message);
+        log.error('[lilibetHandler] lesson.completed error:', err.message);
     }
 });
 
@@ -39,7 +40,7 @@ eventBus.on(EVENTS.STREAK_LOST, async ({ userId }) => {
         const message = getMessage('streak_lost', {});
         await logMessage(userId, 'streak_lost', message);
     } catch (err) {
-        console.error('[lilibetHandler] streak.lost error:', err.message);
+        log.error('[lilibetHandler] streak.lost error:', err.message);
     }
 });
 
@@ -48,6 +49,6 @@ eventBus.on(EVENTS.LEVEL_UP, async ({ userId }) => {
         const message = getMessage('level_up', {});
         await logMessage(userId, 'level_up', message);
     } catch (err) {
-        console.error('[lilibetHandler] level.up error:', err.message);
+        log.error('[lilibetHandler] level.up error:', err.message);
     }
 });

@@ -1,5 +1,8 @@
+import { createLogger } from '../../utils/logger.js';
 import { eventBus, EVENTS } from '../eventBus.js';
 import { query } from '../../db/pool.js';
+
+const log = createLogger('celebrationHandler');
 
 const CELEBRATION_LEVELS = {
     SUBTLE: 'subtle',
@@ -20,7 +23,7 @@ eventBus.on(EVENTS.LESSON_COMPLETED, async ({ userId, isFirstAttempt }) => {
         const level = isFirstAttempt ? CELEBRATION_LEVELS.MEDIUM : CELEBRATION_LEVELS.SUBTLE;
         await logCelebration(userId, 'lesson_complete', level, { isFirstAttempt });
     } catch (err) {
-        console.error('[celebrationHandler] Error:', err.message);
+        log.error('[celebrationHandler] Error:', err.message);
     }
 });
 
@@ -28,7 +31,7 @@ eventBus.on(EVENTS.LEVEL_UP, async ({ userId, newLevel }) => {
     try {
         await logCelebration(userId, 'level_up', CELEBRATION_LEVELS.BIG, { newLevel });
     } catch (err) {
-        console.error('[celebrationHandler] level.up error:', err.message);
+        log.error('[celebrationHandler] level.up error:', err.message);
     }
 });
 
@@ -36,7 +39,7 @@ eventBus.on(EVENTS.BADGE_EARNED, async ({ userId, badgeSlug }) => {
     try {
         await logCelebration(userId, 'badge_earned', CELEBRATION_LEVELS.MEDIUM, { badgeSlug });
     } catch (err) {
-        console.error('[celebrationHandler] badge.earned error:', err.message);
+        log.error('[celebrationHandler] badge.earned error:', err.message);
     }
 });
 
@@ -44,7 +47,7 @@ eventBus.on(EVENTS.CAREER_STAGE_REACHED, async ({ userId, stageSlug }) => {
     try {
         await logCelebration(userId, 'career_stage', CELEBRATION_LEVELS.BIG, { stageSlug });
     } catch (err) {
-        console.error('[celebrationHandler] career.stage error:', err.message);
+        log.error('[celebrationHandler] career.stage error:', err.message);
     }
 });
 

@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import { env } from './config/env.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { rateLimiter } from './middleware/rateLimiter.js';
+import { requestLogger } from './middleware/requestLogger.js';
 
 import authRoutes from './routes/auth.js';
 import courseRoutes from './routes/courses.js';
@@ -23,9 +24,9 @@ const SHARED_DIR = join(__dirname, '../../shared');
 export const createApp = () => {
     const app = express();
 
-    app.set('trust proxy', 1);
-
-    app.use(helmet({ contentSecurityPolicy: false }));
+    app.use(helmet({
+        contentSecurityPolicy: false,
+    }));
 
     app.use(cors({
         origin: env.clientUrl,
@@ -35,8 +36,10 @@ export const createApp = () => {
     app.use(express.json({ limit: '50kb' }));
     app.use(express.urlencoded({ extended: true, limit: '50kb' }));
 
+    app.use(requestLogger);
+
     app.use('/shared', express.static(SHARED_DIR));
-    app.use(express.static(CLIENT_DIR, { extensions: ['html'] }));
+    app.use(express.static(CLIENT_DIR));
 
     app.use('/api', rateLimiter);
 

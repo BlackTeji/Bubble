@@ -1,5 +1,8 @@
+import { createLogger } from '../../utils/logger.js';
 import { eventBus, EVENTS } from '../eventBus.js';
 import { query } from '../../db/pool.js';
+
+const log = createLogger('learnerStateHandler');
 
 const STRUGGLE_THRESHOLD = 3;
 const CONFIDENT_STREAK = 5;
@@ -52,7 +55,7 @@ eventBus.on(EVENTS.SUBMISSION_COMPLETED, async ({ userId, isCorrect, isFirstAtte
             });
         }
     } catch (err) {
-        console.error('[learnerStateHandler] Error:', err.message);
+        log.error('[learnerStateHandler] Error:', err.message);
     }
 });
 
@@ -60,6 +63,6 @@ eventBus.on(EVENTS.STREAK_LOST, async ({ userId }) => {
     try {
         await updateState(userId, { state: 'inactive' });
     } catch (err) {
-        console.error('[learnerStateHandler] streak.lost error:', err.message);
+        log.error('[learnerStateHandler] streak.lost error:', err.message);
     }
 });
