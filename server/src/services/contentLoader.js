@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import { query } from '../db/pool.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const CONTENT_DIR = join(__dirname, '../../../../content/courses');
+const CONTENT_DIR = join(__dirname, '../../../content/courses');
 
 const readJSON = async (filepath) => {
     const text = await readFile(filepath, 'utf8');
