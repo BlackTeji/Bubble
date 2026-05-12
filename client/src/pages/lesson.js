@@ -27,8 +27,6 @@ const courseSlug = params.get('course') ?? 'data-analytics';
 const lessonUrl = (id) => `/lesson.html?id=${id}&course=${courseSlug}`;
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
-// Mobile-first: every base rule works at 320px.
-// min-width queries add layout complexity for wider screens.
 
 const addLessonStyles = () => {
     const style = document.createElement('style');
@@ -669,18 +667,15 @@ const bindNavButtons = (container, nav) => {
     });
 };
 
-// Called by the lesson engine after the learner marks a lesson complete.
 const onLessonCompleted = (actionsEl, nav) => {
     if (!actionsEl || !nav) return;
 
-    // Unlock the Next button
     const nextBtn = actionsEl.querySelector('#nav-next-btn');
     if (nextBtn) {
         nextBtn.disabled = false;
         nextBtn.setAttribute('aria-disabled', 'false');
     }
 
-    // Show the continue prompt above the nav
     if (nav.next && !actionsEl.querySelector('.lesson-next-prompt')) {
         const prompt = document.createElement('div');
         prompt.className = 'lesson-next-prompt';
@@ -711,7 +706,6 @@ const loadLesson = async () => {
     root.innerHTML = skeletonLesson();
 
     try {
-        // Lesson is critical. Navigation, progress, XP are non-critical.
         const [lessonResult, progressResult, gamResult, navResult] = await Promise.allSettled([
             http.get(`/lessons/${lessonId}`),
             http.get('/progress'),
@@ -776,12 +770,21 @@ const loadLesson = async () => {
 
           <div class="lesson-actions" id="lesson-actions">
             <div class="lesson-lilibet-feedback" id="lesson-lilibet-feedback"></div>
-            <button class="btn btn-primary lesson-complete-btn"
-                    id="lesson-complete-btn"
-                    type="button"
-                    ${alreadyCompleted ? '' : 'disabled'}>
-              ${alreadyCompleted ? '✓ Completed' : 'Mark as complete'}
-            </button>
+            ${alreadyCompleted
+                (nav?.next ? `
+                  <div class="lesson-next-prompt">
+                    <span class="lesson-next-prompt-text">Up next: \${nav.next.title}</span>
+                    <button class="lesson-next-prompt-btn" type="button" id="nav-next-prompt-btn">
+                      Continue →
+                    </button>
+                  </div>` : '')
+                `<button class="btn btn-primary lesson-complete-btn"
+                         id="lesson-complete-btn"
+                         type="button"
+                         disabled>
+                   Mark as complete
+                 </button>`
+            }
             ${nav ? renderLessonNav(nav, alreadyCompleted) : ''}
           </div>
         </div>
@@ -791,8 +794,15 @@ const loadLesson = async () => {
         const actionsEl = document.getElementById('lesson-actions');
 
         mountLessonEngine(document.getElementById('lesson-engine-root'), lesson, {
+            alreadyCompleted,
             onCompleted: () => onLessonCompleted(actionsEl, nav),
         });
+
+        if (alreadyCompleted && nav?.next) {
+            actionsEl.querySelector('#nav-next-prompt-btn')?.addEventListener('click', () => {
+                navigateTo(lessonUrl(nav.next.id));
+            });
+        }
 
         if (nav) bindNavButtons(actionsEl, nav);
 

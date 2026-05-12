@@ -1,13 +1,13 @@
-import { http } from '../../services/http.js';
-import { lessonStore } from '../../stores/lessonStore.js';
-import { progressStore } from '../../stores/progressStore.js';
-import { xpStore } from '../../stores/xpStore.js';
-import { clientBus, CLIENT_EVENTS } from '../../utils/eventBus.js';
-import { getMessage } from '../../../../shared/lilibet/index.js';
-import { slideUp, floatXP } from '../../utils/animations.js';
-import { handleSubmissionResult } from '../../services/celebrationService.js';
-import { showToast } from '../Toast/index.js';
-import { navigateTo } from '../../utils/transitions.js';
+import { http } from '../services/http.js';
+import { lessonStore } from '../stores/lessonStore.js';
+import { progressStore } from '../stores/progressStore.js';
+import { xpStore } from '../stores/xpStore.js';
+import { clientBus, CLIENT_EVENTS } from '../utils/eventBus.js';
+import { getMessage } from '../../../shared/lilibet/index.js';
+import { slideUp, floatXP } from '../utils/animations.js';
+import { handleSubmissionResult } from '../services/celebrationService.js';
+import { showToast } from '../components/Toast/index.js';
+import { navigateTo } from '../utils/transitions.js';
 
 const BLOCK_RENDERERS = {
     text: renderTextBlock,
@@ -154,10 +154,10 @@ export const renderBlocks = (blocks) => {
     }).join('');
 };
 
-export const mountLessonEngine = (container, lesson) => {
+export const mountLessonEngine = (container, lesson, options = {}) => {
     const content = lesson.content_json;
     if (!content) return;
-
+    
     container.innerHTML = `
     <article class="lesson-content" aria-label="${lesson.title}">
       ${content.intro ? `
@@ -169,24 +169,16 @@ export const mountLessonEngine = (container, lesson) => {
           <p class="lesson-intro-text">${content.intro}</p>
         </div>
       ` : ''}
-
       <div class="lesson-blocks">
         ${renderBlocks(content.blocks ?? [])}
-      </div>
-
-      <div class="lesson-actions">
-        <div class="lesson-lilibet-feedback" id="lesson-lilibet-feedback"></div>
-        <button class="btn btn-primary lesson-complete-btn" id="lesson-complete-btn" type="button" disabled>
-          Mark as complete
-        </button>
       </div>
     </article>
   `;
 
-    bindLessonInteractions(container, lesson);
+    bindLessonInteractions(container, lesson, options);
 };
 
-const bindLessonInteractions = (container, lesson) => {
+const bindLessonInteractions = (container, lesson, options = {}) => {
     let quizzesAnswered = 0;
     let fillsSubmitted = 0;
     const quizBlocks = container.querySelectorAll('.quiz-block');
@@ -194,8 +186,9 @@ const bindLessonInteractions = (container, lesson) => {
     const totalInteractives = quizBlocks.length + fillBlocks.length;
 
     const checkCompletion = () => {
+        if (options.alreadyCompleted) return;
         if (quizzesAnswered + fillsSubmitted >= totalInteractives) {
-            const btn = container.querySelector('#lesson-complete-btn');
+            const btn = document.getElementById('lesson-complete-btn');
             if (btn) { btn.disabled = false; btn.classList.add('animate-bounce-in'); }
         }
     };
@@ -215,14 +208,13 @@ const bindLessonInteractions = (container, lesson) => {
 
                 quizEl.querySelectorAll('.quiz-option').forEach((btn, i) => {
                     btn.setAttribute('aria-checked', String(i === selectedIndex));
+                    btn.classList.add(i === correctIndex ? 'quiz-option--correct' : (i === selectedIndex ? 'quiz-option--wrong' : ''));
                     btn.disabled = true;
-                    if (i === correctIndex) btn.classList.add('quiz-option--correct');
-                    else if (i === selectedIndex) btn.classList.add('quiz-option--wrong');
                 });
 
                 const feedbackEl = container.querySelector(`#quiz-feedback-${blockIndex}`);
                 const explanationEl = container.querySelector(`#quiz-explanation-${blockIndex}`);
-                const lilibetEl = container.querySelector('#lesson-lilibet-feedback');
+                const lilibetEl = document.getElementById('lesson-lilibet-feedback');
 
                 const message = getMessage(isCorrect ? 'quiz_correct' : 'quiz_wrong', {
                     isCorrect,
@@ -292,11 +284,13 @@ const bindLessonInteractions = (container, lesson) => {
         });
     });
 
-    const completeBtn = container.querySelector('#lesson-complete-btn');
-    completeBtn?.addEventListener('click', () => submitLessonCompletion(lesson, completeBtn));
+    if (!options.alreadyCompleted) {
+        const completeBtn = document.getElementById('lesson-complete-btn');
+        completeBtn?.addEventListener('click', () => submitLessonCompletion(lesson, completeBtn, options));
+    }
 };
 
-const submitLessonCompletion = async (lesson, btn) => {
+const submitLessonCompletion = async (lesson, btn, options = {}) => {
     btn.disabled = true;
     btn.textContent = 'Saving…';
 
@@ -332,6 +326,8 @@ const submitLessonCompletion = async (lesson, btn) => {
 
         btn.textContent = '✓ Completed';
         btn.classList.add('btn-success');
+
+        options.onCompleted?.();
 
         const nextSlug = lesson.content_json?.completion?.nextLessonSlug;
         if (nextSlug) {

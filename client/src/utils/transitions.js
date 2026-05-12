@@ -1,10 +1,10 @@
 export const navigateTo = (url) => {
     if (document.startViewTransition) {
         document.startViewTransition(() => {
-            window.location.href = url;
+            window.location.assign(url);
         });
     } else {
-        window.location.href = url;
+        window.location.assign(url);
     }
 };
 
