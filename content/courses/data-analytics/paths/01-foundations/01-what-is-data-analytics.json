@@ -1,0 +1,74 @@
+{
+    "slug": "what-is-data-analytics",
+    "title": "What is data analytics?",
+    "type": "concept",
+    "estimatedMins": 4,
+    "xpReward": 10,
+    "content": {
+        "intro": "Before writing a single query, let's understand what we're actually trying to do.",
+        "blocks": [
+            {
+                "type": "text",
+                "content": "Data analytics is the practice of examining raw data to find patterns, draw conclusions, and support decisions. It is not about making charts. It is about answering questions with evidence."
+            },
+            {
+                "type": "callout",
+                "variant": "insight",
+                "content": "Every analytics question starts the same way: someone needs to make a decision, and they don't have enough information to make it confidently."
+            },
+            {
+                "type": "text",
+                "content": "An analyst's job is to close that gap — to take messy, incomplete data and turn it into clear, honest answers."
+            },
+            {
+                "type": "divider"
+            },
+            {
+                "type": "text",
+                "content": "There are four types of analytics questions, and they build on each other:"
+            },
+            {
+                "type": "list",
+                "items": [
+                    {
+                        "label": "Descriptive",
+                        "detail": "What happened? (Sales were down 12% last quarter.)"
+                    },
+                    {
+                        "label": "Diagnostic",
+                        "detail": "Why did it happen? (The drop was concentrated in the North region.)"
+                    },
+                    {
+                        "label": "Predictive",
+                        "detail": "What is likely to happen? (If the trend continues, we'll miss target by Q3.)"
+                    },
+                    {
+                        "label": "Prescriptive",
+                        "detail": "What should we do? (Increase field sales activity in the North by 20%.)"
+                    }
+                ]
+            },
+            {
+                "type": "callout",
+                "variant": "tip",
+                "content": "Most people stop at descriptive. The real value of analytics is in diagnostic and predictive work — asking why and what next."
+            },
+            {
+                "type": "quiz",
+                "question": "A marketing team asks: 'Which campaign brought in the most customers last month?' What type of analytics question is this?",
+                "options": [
+                    "Prescriptive — it tells the team what to do",
+                    "Descriptive — it asks what happened",
+                    "Predictive — it forecasts future behaviour",
+                    "Diagnostic — it explains a cause"
+                ],
+                "correct": 1,
+                "explanation": "Descriptive analytics answers 'what happened' questions. Asking which campaign performed best is looking backward at a result — that's descriptive."
+            }
+        ],
+        "completion": {
+            "xpReward": 10,
+            "nextLessonSlug": "types-of-data"
+        }
+    }
+}

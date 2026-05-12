@@ -1,0 +1,400 @@
+{
+    "slug": "ecommerce",
+    "name": "Northfield Commerce",
+    "description": "A mid-sized ecommerce retailer selling electronics and home goods. Dataset covers Q1 2024.",
+    "tables": {
+        "orders": {
+            "description": "One row per customer order",
+            "columns": {
+                "order_id": {
+                    "type": "integer",
+                    "description": "Unique order identifier"
+                },
+                "customer_id": {
+                    "type": "string",
+                    "description": "Customer reference (matches customers table)"
+                },
+                "product_id": {
+                    "type": "integer",
+                    "description": "Product reference (matches products table)"
+                },
+                "amount": {
+                    "type": "decimal",
+                    "description": "Order value in GBP"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Order status: completed, pending, cancelled, refunded"
+                },
+                "order_date": {
+                    "type": "date",
+                    "description": "Date the order was placed"
+                },
+                "region": {
+                    "type": "string",
+                    "description": "UK region: North, South, East, West, London"
+                }
+            },
+            "rows": [
+                {
+                    "order_id": 1001,
+                    "customer_id": "C-204",
+                    "product_id": 3,
+                    "amount": 849.00,
+                    "status": "completed",
+                    "order_date": "2024-01-08",
+                    "region": "London"
+                },
+                {
+                    "order_id": 1002,
+                    "customer_id": "C-187",
+                    "product_id": 7,
+                    "amount": 24.99,
+                    "status": "completed",
+                    "order_date": "2024-01-09",
+                    "region": "North"
+                },
+                {
+                    "order_id": 1003,
+                    "customer_id": "C-204",
+                    "product_id": 2,
+                    "amount": 89.00,
+                    "status": "completed",
+                    "order_date": "2024-01-10",
+                    "region": "London"
+                },
+                {
+                    "order_id": 1004,
+                    "customer_id": "C-319",
+                    "product_id": 5,
+                    "amount": 399.00,
+                    "status": "cancelled",
+                    "order_date": "2024-01-11",
+                    "region": "South"
+                },
+                {
+                    "order_id": 1005,
+                    "customer_id": "C-412",
+                    "product_id": 1,
+                    "amount": 1249.00,
+                    "status": "completed",
+                    "order_date": "2024-01-12",
+                    "region": "East"
+                },
+                {
+                    "order_id": 1006,
+                    "customer_id": "C-187",
+                    "product_id": 4,
+                    "amount": 149.99,
+                    "status": "completed",
+                    "order_date": "2024-01-14",
+                    "region": "North"
+                },
+                {
+                    "order_id": 1007,
+                    "customer_id": "C-551",
+                    "product_id": 6,
+                    "amount": 599.00,
+                    "status": "pending",
+                    "order_date": "2024-01-15",
+                    "region": "West"
+                },
+                {
+                    "order_id": 1008,
+                    "customer_id": "C-319",
+                    "product_id": 3,
+                    "amount": 849.00,
+                    "status": "completed",
+                    "order_date": "2024-01-16",
+                    "region": "South"
+                },
+                {
+                    "order_id": 1009,
+                    "customer_id": "C-628",
+                    "product_id": 8,
+                    "amount": 34.99,
+                    "status": "refunded",
+                    "order_date": "2024-01-17",
+                    "region": "London"
+                },
+                {
+                    "order_id": 1010,
+                    "customer_id": "C-412",
+                    "product_id": 2,
+                    "amount": 89.00,
+                    "status": "completed",
+                    "order_date": "2024-01-18",
+                    "region": "East"
+                },
+                {
+                    "order_id": 1011,
+                    "customer_id": "C-733",
+                    "product_id": 5,
+                    "amount": 399.00,
+                    "status": "completed",
+                    "order_date": "2024-01-20",
+                    "region": "North"
+                },
+                {
+                    "order_id": 1012,
+                    "customer_id": "C-204",
+                    "product_id": 1,
+                    "amount": 1249.00,
+                    "status": "completed",
+                    "order_date": "2024-01-22",
+                    "region": "London"
+                },
+                {
+                    "order_id": 1013,
+                    "customer_id": "C-551",
+                    "product_id": 7,
+                    "amount": 24.99,
+                    "status": "completed",
+                    "order_date": "2024-01-23",
+                    "region": "West"
+                },
+                {
+                    "order_id": 1014,
+                    "customer_id": "C-844",
+                    "product_id": 4,
+                    "amount": 149.99,
+                    "status": "cancelled",
+                    "order_date": "2024-01-24",
+                    "region": "South"
+                },
+                {
+                    "order_id": 1015,
+                    "customer_id": "C-628",
+                    "product_id": 3,
+                    "amount": 849.00,
+                    "status": "completed",
+                    "order_date": "2024-01-25",
+                    "region": "London"
+                },
+                {
+                    "order_id": 1016,
+                    "customer_id": "C-187",
+                    "product_id": 1,
+                    "amount": 1249.00,
+                    "status": "completed",
+                    "order_date": "2024-01-28",
+                    "region": "North"
+                },
+                {
+                    "order_id": 1017,
+                    "customer_id": "C-412",
+                    "product_id": 6,
+                    "amount": 599.00,
+                    "status": "pending",
+                    "order_date": "2024-01-30",
+                    "region": "East"
+                },
+                {
+                    "order_id": 1018,
+                    "customer_id": "C-319",
+                    "product_id": 8,
+                    "amount": 34.99,
+                    "status": "completed",
+                    "order_date": "2024-02-01",
+                    "region": "South"
+                },
+                {
+                    "order_id": 1019,
+                    "customer_id": "C-733",
+                    "product_id": 2,
+                    "amount": 89.00,
+                    "status": "completed",
+                    "order_date": "2024-02-03",
+                    "region": "North"
+                },
+                {
+                    "order_id": 1020,
+                    "customer_id": "C-844",
+                    "product_id": 5,
+                    "amount": 399.00,
+                    "status": "completed",
+                    "order_date": "2024-02-05",
+                    "region": "South"
+                }
+            ]
+        },
+        "customers": {
+            "description": "One row per registered customer",
+            "columns": {
+                "customer_id": {
+                    "type": "string",
+                    "description": "Unique customer identifier"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Customer full name"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Customer email address"
+                },
+                "joined_date": {
+                    "type": "date",
+                    "description": "Date customer registered"
+                },
+                "tier": {
+                    "type": "string",
+                    "description": "Loyalty tier: Standard, Silver, Gold"
+                },
+                "region": {
+                    "type": "string",
+                    "description": "UK region"
+                }
+            },
+            "rows": [
+                {
+                    "customer_id": "C-187",
+                    "name": "Amara Osei",
+                    "email": "amara@example.com",
+                    "joined_date": "2022-06-14",
+                    "tier": "Gold",
+                    "region": "North"
+                },
+                {
+                    "customer_id": "C-204",
+                    "name": "James Whitfield",
+                    "email": "james@example.com",
+                    "joined_date": "2021-11-03",
+                    "tier": "Gold",
+                    "region": "London"
+                },
+                {
+                    "customer_id": "C-319",
+                    "name": "Priya Nair",
+                    "email": "priya@example.com",
+                    "joined_date": "2023-02-28",
+                    "tier": "Silver",
+                    "region": "South"
+                },
+                {
+                    "customer_id": "C-412",
+                    "name": "Tom Bergmann",
+                    "email": "tom@example.com",
+                    "joined_date": "2022-09-17",
+                    "tier": "Silver",
+                    "region": "East"
+                },
+                {
+                    "customer_id": "C-551",
+                    "name": "Sofia Andreou",
+                    "email": "sofia@example.com",
+                    "joined_date": "2023-07-05",
+                    "tier": "Standard",
+                    "region": "West"
+                },
+                {
+                    "customer_id": "C-628",
+                    "name": "Kwame Asante",
+                    "email": "kwame@example.com",
+                    "joined_date": "2023-10-19",
+                    "tier": "Standard",
+                    "region": "London"
+                },
+                {
+                    "customer_id": "C-733",
+                    "name": "Mei-Ling Tan",
+                    "email": "meiling@example.com",
+                    "joined_date": "2022-03-08",
+                    "tier": "Silver",
+                    "region": "North"
+                },
+                {
+                    "customer_id": "C-844",
+                    "name": "David Okeke",
+                    "email": "david@example.com",
+                    "joined_date": "2024-01-02",
+                    "tier": "Standard",
+                    "region": "South"
+                }
+            ]
+        },
+        "products": {
+            "description": "One row per product in the catalogue",
+            "columns": {
+                "product_id": {
+                    "type": "integer",
+                    "description": "Unique product identifier"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Product name"
+                },
+                "category": {
+                    "type": "string",
+                    "description": "Product category"
+                },
+                "price": {
+                    "type": "decimal",
+                    "description": "Listed price in GBP"
+                },
+                "in_stock": {
+                    "type": "boolean",
+                    "description": "Whether the product is currently in stock"
+                }
+            },
+            "rows": [
+                {
+                    "product_id": 1,
+                    "name": "ProBook Laptop 15",
+                    "category": "Computing",
+                    "price": 1249.00,
+                    "in_stock": true
+                },
+                {
+                    "product_id": 2,
+                    "name": "Mechanical Keyboard",
+                    "category": "Accessories",
+                    "price": 89.00,
+                    "in_stock": true
+                },
+                {
+                    "product_id": 3,
+                    "name": "UltraWide Monitor 32",
+                    "category": "Computing",
+                    "price": 849.00,
+                    "in_stock": true
+                },
+                {
+                    "product_id": 4,
+                    "name": "Wireless Mouse",
+                    "category": "Accessories",
+                    "price": 149.99,
+                    "in_stock": true
+                },
+                {
+                    "product_id": 5,
+                    "name": "Smart Speaker Home",
+                    "category": "Home",
+                    "price": 399.00,
+                    "in_stock": false
+                },
+                {
+                    "product_id": 6,
+                    "name": "Robot Vacuum Pro",
+                    "category": "Home",
+                    "price": 599.00,
+                    "in_stock": true
+                },
+                {
+                    "product_id": 7,
+                    "name": "USB-C Hub 7-port",
+                    "category": "Accessories",
+                    "price": 24.99,
+                    "in_stock": true
+                },
+                {
+                    "product_id": 8,
+                    "name": "Screen Cleaning Kit",
+                    "category": "Accessories",
+                    "price": 34.99,
+                    "in_stock": true
+                }
+            ]
+        }
+    }
+}

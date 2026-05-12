@@ -1,0 +1,103 @@
+{
+    "slug": "grouping-data",
+    "title": "Grouping data",
+    "type": "challenge",
+    "estimatedMins": 10,
+    "xpReward": 35,
+    "content": {
+        "intro": "COUNT tells you how many. GROUP BY tells you how many of each. This is the move that turns data into insight.",
+        "blocks": [
+            {
+                "type": "text",
+                "content": "A single COUNT gives you one number. But analysts rarely want one number — they want comparisons. GROUP BY breaks your data into groups and applies your aggregation to each one separately."
+            },
+            {
+                "type": "code",
+                "lang": "sql",
+                "label": "Orders by status",
+                "code": "SELECT status, COUNT(*) AS order_count\nFROM orders\nGROUP BY status;"
+            },
+            {
+                "type": "callout",
+                "variant": "insight",
+                "content": "Read this as: 'For each distinct value of status, give me the count of rows.' One result row per group. This is how you go from raw data to a summary table."
+            },
+            {
+                "type": "text",
+                "content": "You can group by any column, and add ORDER BY to sort the results:"
+            },
+            {
+                "type": "code",
+                "lang": "sql",
+                "label": "Orders by region, highest first",
+                "code": "SELECT region, COUNT(*) AS order_count\nFROM orders\nGROUP BY region\nORDER BY order_count DESC;"
+            },
+            {
+                "type": "callout",
+                "variant": "tip",
+                "content": "The rule: every column in SELECT must either be in GROUP BY, or be inside an aggregation function like COUNT or SUM. This trips up almost every new SQL writer — remember it and you will avoid the most common GROUP BY error."
+            },
+            {
+                "type": "table",
+                "caption": "What the query above would return",
+                "headers": [
+                    "region",
+                    "order_count"
+                ],
+                "rows": [
+                    [
+                        "London",
+                        "5"
+                    ],
+                    [
+                        "South",
+                        "4"
+                    ],
+                    [
+                        "North",
+                        "4"
+                    ],
+                    [
+                        "East",
+                        "3"
+                    ],
+                    [
+                        "West",
+                        "2"
+                    ]
+                ]
+            },
+            {
+                "type": "text",
+                "content": "Now you can answer: which region placed the most orders? That is a business question answered in three lines of SQL."
+            },
+            {
+                "type": "quiz",
+                "question": "You run: SELECT status, COUNT(*) FROM orders GROUP BY status. The result has 4 rows. What does that tell you?",
+                "options": [
+                    "There are 4 orders in total",
+                    "There are 4 distinct values of status in the orders table",
+                    "The query returned an error — you need WHERE before GROUP BY",
+                    "There are 4 columns in the orders table"
+                ],
+                "correct": 1,
+                "explanation": "GROUP BY produces one row per distinct value. Four result rows means there are four distinct statuses — in this dataset: completed, pending, cancelled, and refunded."
+            },
+            {
+                "type": "fill",
+                "instruction": "Write a query to count orders by region, sorted by order count descending:",
+                "template": "SELECT region, ___(*)  AS order_count\nFROM orders\n___ BY region\nORDER BY order_count ___;",
+                "blanks": [
+                    "COUNT",
+                    "GROUP",
+                    "DESC"
+                ],
+                "hint": "Three blanks: the aggregation function, the grouping keyword, and the sort direction."
+            }
+        ],
+        "completion": {
+            "xpReward": 35,
+            "nextLessonSlug": null
+        }
+    }
+}

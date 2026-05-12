@@ -1,0 +1,112 @@
+{
+    "slug": "reading-a-dataset",
+    "title": "Reading a dataset",
+    "type": "concept",
+    "estimatedMins": 6,
+    "xpReward": 15,
+    "content": {
+        "intro": "When you encounter a new dataset, there is a process. Analysts do not dive in randomly — they orient themselves first.",
+        "blocks": [
+            {
+                "type": "text",
+                "content": "Every dataset is a table. Rows are records — individual observations. Columns are fields — the attributes of each observation. Before analysing anything, you need to understand what you're looking at."
+            },
+            {
+                "type": "table",
+                "caption": "A simple orders dataset",
+                "headers": [
+                    "order_id",
+                    "customer_id",
+                    "product",
+                    "amount",
+                    "status",
+                    "order_date"
+                ],
+                "rows": [
+                    [
+                        "1001",
+                        "C-204",
+                        "Laptop",
+                        "£849.00",
+                        "completed",
+                        "2024-01-12"
+                    ],
+                    [
+                        "1002",
+                        "C-187",
+                        "Mouse",
+                        "£24.99",
+                        "pending",
+                        "2024-01-13"
+                    ],
+                    [
+                        "1003",
+                        "C-204",
+                        "Keyboard",
+                        "£89.00",
+                        "completed",
+                        "2024-01-13"
+                    ],
+                    [
+                        "1004",
+                        "C-319",
+                        "Monitor",
+                        "£399.00",
+                        "cancelled",
+                        "2024-01-14"
+                    ]
+                ]
+            },
+            {
+                "type": "callout",
+                "variant": "tip",
+                "content": "Notice that customer C-204 appears twice. In a real dataset, you would want to know: is that intentional? Are repeat customers expected? Missing context is one of an analyst's biggest challenges."
+            },
+            {
+                "type": "text",
+                "content": "When you first open a dataset, ask yourself five questions in order:"
+            },
+            {
+                "type": "list",
+                "items": [
+                    {
+                        "label": "What does each row represent?",
+                        "detail": "One order? One customer? One event?"
+                    },
+                    {
+                        "label": "What time period does this cover?",
+                        "detail": "A day, a quarter, all time?"
+                    },
+                    {
+                        "label": "How many rows are there?",
+                        "detail": "Scale affects everything."
+                    },
+                    {
+                        "label": "Are there missing values?",
+                        "detail": "Blank cells are decisions waiting to be made."
+                    },
+                    {
+                        "label": "What does each column mean?",
+                        "detail": "Never assume — read the data dictionary if one exists."
+                    }
+                ]
+            },
+            {
+                "type": "quiz",
+                "question": "In the orders table above, customer C-204 appears in two rows. What does this tell you?",
+                "options": [
+                    "There is a data error — each customer should only appear once",
+                    "The table has one row per order, and C-204 has placed two orders",
+                    "The order_id column is not unique",
+                    "The dataset is duplicated"
+                ],
+                "correct": 1,
+                "explanation": "The row represents an order, not a customer. A customer can have many orders, so seeing C-204 twice means they placed two separate orders. This is expected behaviour in an orders table."
+            }
+        ],
+        "completion": {
+            "xpReward": 15,
+            "nextLessonSlug": "your-first-sql-query"
+        }
+    }
+}

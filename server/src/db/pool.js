@@ -1,0 +1,20 @@
+import pg from 'pg';
+import { env } from '../config/env.js';
+
+const { Pool } = pg;
+
+export const pool = new Pool({
+    connectionString: env.databaseUrl,
+    max: 10,
+    idleTimeoutMillis: 30_000,
+    connectionTimeoutMillis: 5_000,
+    ssl: env.isProd ? { rejectUnauthorized: false } : false,
+});
+
+pool.on('error', (err) => {
+    console.error('[DB] Unexpected pool error:', err.message);
+});
+
+export const query = (text, params) => pool.query(text, params);
+
+export const getClient = () => pool.connect();

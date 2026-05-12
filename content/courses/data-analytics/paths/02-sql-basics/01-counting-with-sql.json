@@ -1,0 +1,78 @@
+{
+    "slug": "counting-with-sql",
+    "title": "Counting with SQL",
+    "type": "challenge",
+    "estimatedMins": 8,
+    "xpReward": 30,
+    "content": {
+        "intro": "SELECT and WHERE show you rows. COUNT tells you how many. This is where SQL starts answering real business questions.",
+        "blocks": [
+            {
+                "type": "text",
+                "content": "So far you have been retrieving rows. But often the question is not 'show me the rows' — it is 'how many rows match this condition?' That is what COUNT does."
+            },
+            {
+                "type": "code",
+                "lang": "sql",
+                "label": "Count all rows in a table",
+                "code": "SELECT COUNT(*)\nFROM orders;"
+            },
+            {
+                "type": "callout",
+                "variant": "insight",
+                "content": "COUNT(*) counts every row, including those with null values in other columns. It is the simplest aggregation — just a total."
+            },
+            {
+                "type": "text",
+                "content": "Combine COUNT with WHERE to answer specific questions:"
+            },
+            {
+                "type": "code",
+                "lang": "sql",
+                "label": "How many completed orders?",
+                "code": "SELECT COUNT(*)\nFROM orders\nWHERE status = 'completed';"
+            },
+            {
+                "type": "text",
+                "content": "You can also name your result column to make the output readable:"
+            },
+            {
+                "type": "code",
+                "lang": "sql",
+                "label": "Name the result column",
+                "code": "SELECT COUNT(*) AS completed_orders\nFROM orders\nWHERE status = 'completed';"
+            },
+            {
+                "type": "callout",
+                "variant": "tip",
+                "content": "AS gives a column an alias — a friendlier name for your output. It does not change the data, only the label."
+            },
+            {
+                "type": "quiz",
+                "question": "A manager asks: 'How many orders did we receive from the North region?' Which query answers this correctly?",
+                "options": [
+                    "SELECT region FROM orders WHERE region = 'North';",
+                    "SELECT COUNT(*) FROM orders WHERE region = 'North';",
+                    "SELECT COUNT(region) WHERE region = 'North';",
+                    "SELECT * FROM orders WHERE COUNT(region) = 'North';"
+                ],
+                "correct": 1,
+                "explanation": "COUNT(*) returns a number — how many rows match. The first option returns the actual rows, not the count. The third and fourth options have invalid SQL syntax — FROM is required, and COUNT cannot appear in a WHERE clause."
+            },
+            {
+                "type": "fill",
+                "instruction": "Write a query to count all cancelled orders. Name the result 'cancelled_count':",
+                "template": "SELECT ___(*)  AS cancelled_count\nFROM orders\nWHERE status = ___;",
+                "blanks": [
+                    "COUNT",
+                    "'cancelled'"
+                ],
+                "hint": "The first blank is the aggregation function. The second is the status value — string values need single quotes."
+            }
+        ],
+        "completion": {
+            "xpReward": 30,
+            "nextLessonSlug": "grouping-data"
+        }
+    }
+}

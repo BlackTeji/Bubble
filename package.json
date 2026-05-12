@@ -1,0 +1,48 @@
+{
+    "name": "bubble",
+    "version": "0.1.0",
+    "description": "Bubble — an emotionally intelligent interactive Data Analytics learning platform",
+    "private": true,
+    "type": "module",
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "main": "server/src/server.js",
+    "scripts": {
+        "start": "node server/src/server.js",
+        "dev": "nodemon server/src/server.js",
+        "migrate": "node server/src/db/migrate.js",
+        "seed:content": "node server/src/services/contentLoader.js",
+        "lint": "eslint server/src shared/",
+        "test": "node --test server/src/**/*.test.js"
+    },
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "express-rate-limit": "^7.3.1",
+        "helmet": "^7.1.0",
+        "joi": "^17.13.1",
+        "jsonwebtoken": "^9.0.2",
+        "openai": "^4.52.7",
+        "pg": "^8.12.0",
+        "uuid": "^10.0.0",
+        "cookie-parser": "^1.4.6"
+    },
+    "devDependencies": {
+        "eslint": "^9.7.0",
+        "nodemon": "^3.1.4"
+    },
+    "nodemonConfig": {
+        "watch": [
+            "server/src",
+            "shared"
+        ],
+        "ext": "js,json",
+        "ignore": [
+            "client/**",
+            "content/**"
+        ]
+    }
+}

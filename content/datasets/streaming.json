@@ -1,0 +1,359 @@
+{
+    "slug": "streaming",
+    "name": "Wavelength",
+    "description": "A music streaming platform. Dataset covers January 2024 — user sessions, content catalogue, and listening behaviour.",
+    "tables": {
+        "users": {
+            "description": "One row per registered user",
+            "columns": {
+                "user_id": {
+                    "type": "string",
+                    "description": "Unique user identifier"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "Display name"
+                },
+                "plan": {
+                    "type": "string",
+                    "description": "Subscription plan: free, standard, premium"
+                },
+                "country": {
+                    "type": "string",
+                    "description": "User country code"
+                },
+                "joined_date": {
+                    "type": "date",
+                    "description": "Registration date"
+                },
+                "age_group": {
+                    "type": "string",
+                    "description": "Age bracket: 18-24, 25-34, 35-44, 45+"
+                }
+            },
+            "rows": [
+                {
+                    "user_id": "U-001",
+                    "username": "clara_m",
+                    "plan": "premium",
+                    "country": "GB",
+                    "joined_date": "2022-03-14",
+                    "age_group": "25-34"
+                },
+                {
+                    "user_id": "U-002",
+                    "username": "jakobsen_k",
+                    "plan": "standard",
+                    "country": "DE",
+                    "joined_date": "2021-09-02",
+                    "age_group": "35-44"
+                },
+                {
+                    "user_id": "U-003",
+                    "username": "preethi_r",
+                    "plan": "free",
+                    "country": "IN",
+                    "joined_date": "2023-06-18",
+                    "age_group": "18-24"
+                },
+                {
+                    "user_id": "U-004",
+                    "username": "tomasz_b",
+                    "plan": "premium",
+                    "country": "PL",
+                    "joined_date": "2020-11-30",
+                    "age_group": "25-34"
+                },
+                {
+                    "user_id": "U-005",
+                    "username": "akosua_d",
+                    "plan": "standard",
+                    "country": "GH",
+                    "joined_date": "2022-07-22",
+                    "age_group": "18-24"
+                },
+                {
+                    "user_id": "U-006",
+                    "username": "elena_v",
+                    "plan": "premium",
+                    "country": "ES",
+                    "joined_date": "2021-04-11",
+                    "age_group": "35-44"
+                },
+                {
+                    "user_id": "U-007",
+                    "username": "ryo_h",
+                    "plan": "free",
+                    "country": "JP",
+                    "joined_date": "2023-11-05",
+                    "age_group": "18-24"
+                },
+                {
+                    "user_id": "U-008",
+                    "username": "fatima_al",
+                    "plan": "standard",
+                    "country": "AE",
+                    "joined_date": "2022-01-17",
+                    "age_group": "25-34"
+                }
+            ]
+        },
+        "sessions": {
+            "description": "One row per listening session",
+            "columns": {
+                "session_id": {
+                    "type": "integer",
+                    "description": "Unique session identifier"
+                },
+                "user_id": {
+                    "type": "string",
+                    "description": "User reference"
+                },
+                "track_id": {
+                    "type": "integer",
+                    "description": "Track reference"
+                },
+                "duration_mins": {
+                    "type": "integer",
+                    "description": "How long the user listened in minutes"
+                },
+                "completed": {
+                    "type": "boolean",
+                    "description": "Whether the track was played to completion"
+                },
+                "device": {
+                    "type": "string",
+                    "description": "Listening device: mobile, desktop, tablet, smart_speaker"
+                },
+                "session_date": {
+                    "type": "date",
+                    "description": "Date of the session"
+                }
+            },
+            "rows": [
+                {
+                    "session_id": 101,
+                    "user_id": "U-001",
+                    "track_id": 3,
+                    "duration_mins": 4,
+                    "completed": true,
+                    "device": "mobile",
+                    "session_date": "2024-01-02"
+                },
+                {
+                    "session_id": 102,
+                    "user_id": "U-002",
+                    "track_id": 1,
+                    "duration_mins": 3,
+                    "completed": true,
+                    "device": "desktop",
+                    "session_date": "2024-01-02"
+                },
+                {
+                    "session_id": 103,
+                    "user_id": "U-003",
+                    "track_id": 5,
+                    "duration_mins": 1,
+                    "completed": false,
+                    "device": "mobile",
+                    "session_date": "2024-01-03"
+                },
+                {
+                    "session_id": 104,
+                    "user_id": "U-004",
+                    "track_id": 2,
+                    "duration_mins": 5,
+                    "completed": true,
+                    "device": "smart_speaker",
+                    "session_date": "2024-01-03"
+                },
+                {
+                    "session_id": 105,
+                    "user_id": "U-001",
+                    "track_id": 4,
+                    "duration_mins": 6,
+                    "completed": true,
+                    "device": "mobile",
+                    "session_date": "2024-01-04"
+                },
+                {
+                    "session_id": 106,
+                    "user_id": "U-005",
+                    "track_id": 1,
+                    "duration_mins": 3,
+                    "completed": true,
+                    "device": "tablet",
+                    "session_date": "2024-01-04"
+                },
+                {
+                    "session_id": 107,
+                    "user_id": "U-006",
+                    "track_id": 6,
+                    "duration_mins": 4,
+                    "completed": true,
+                    "device": "desktop",
+                    "session_date": "2024-01-05"
+                },
+                {
+                    "session_id": 108,
+                    "user_id": "U-003",
+                    "track_id": 3,
+                    "duration_mins": 2,
+                    "completed": false,
+                    "device": "mobile",
+                    "session_date": "2024-01-06"
+                },
+                {
+                    "session_id": 109,
+                    "user_id": "U-007",
+                    "track_id": 7,
+                    "duration_mins": 4,
+                    "completed": true,
+                    "device": "mobile",
+                    "session_date": "2024-01-07"
+                },
+                {
+                    "session_id": 110,
+                    "user_id": "U-002",
+                    "track_id": 4,
+                    "duration_mins": 6,
+                    "completed": true,
+                    "device": "desktop",
+                    "session_date": "2024-01-08"
+                },
+                {
+                    "session_id": 111,
+                    "user_id": "U-004",
+                    "track_id": 5,
+                    "duration_mins": 1,
+                    "completed": false,
+                    "device": "smart_speaker",
+                    "session_date": "2024-01-09"
+                },
+                {
+                    "session_id": 112,
+                    "user_id": "U-008",
+                    "track_id": 2,
+                    "duration_mins": 5,
+                    "completed": true,
+                    "device": "tablet",
+                    "session_date": "2024-01-10"
+                },
+                {
+                    "session_id": 113,
+                    "user_id": "U-001",
+                    "track_id": 7,
+                    "duration_mins": 4,
+                    "completed": true,
+                    "device": "mobile",
+                    "session_date": "2024-01-11"
+                },
+                {
+                    "session_id": 114,
+                    "user_id": "U-006",
+                    "track_id": 1,
+                    "duration_mins": 3,
+                    "completed": true,
+                    "device": "desktop",
+                    "session_date": "2024-01-12"
+                },
+                {
+                    "session_id": 115,
+                    "user_id": "U-005",
+                    "track_id": 6,
+                    "duration_mins": 4,
+                    "completed": true,
+                    "device": "mobile",
+                    "session_date": "2024-01-13"
+                }
+            ]
+        },
+        "tracks": {
+            "description": "One row per track in the catalogue",
+            "columns": {
+                "track_id": {
+                    "type": "integer",
+                    "description": "Unique track identifier"
+                },
+                "title": {
+                    "type": "string",
+                    "description": "Track title"
+                },
+                "artist": {
+                    "type": "string",
+                    "description": "Artist name"
+                },
+                "genre": {
+                    "type": "string",
+                    "description": "Music genre"
+                },
+                "duration_s": {
+                    "type": "integer",
+                    "description": "Track duration in seconds"
+                },
+                "release_year": {
+                    "type": "integer",
+                    "description": "Year the track was released"
+                }
+            },
+            "rows": [
+                {
+                    "track_id": 1,
+                    "title": "Northern Lights",
+                    "artist": "Sable",
+                    "genre": "Ambient",
+                    "duration_s": 214,
+                    "release_year": 2022
+                },
+                {
+                    "track_id": 2,
+                    "title": "Rooftop Sessions",
+                    "artist": "Kemi Adeyemi",
+                    "genre": "Jazz",
+                    "duration_s": 298,
+                    "release_year": 2021
+                },
+                {
+                    "track_id": 3,
+                    "title": "Static Heart",
+                    "artist": "The Fold",
+                    "genre": "Indie",
+                    "duration_s": 187,
+                    "release_year": 2023
+                },
+                {
+                    "track_id": 4,
+                    "title": "Midnight Overture",
+                    "artist": "Orquesta Sur",
+                    "genre": "Classical",
+                    "duration_s": 342,
+                    "release_year": 2020
+                },
+                {
+                    "track_id": 5,
+                    "title": "Neon District",
+                    "artist": "PRISM",
+                    "genre": "Electronic",
+                    "duration_s": 203,
+                    "release_year": 2024
+                },
+                {
+                    "track_id": 6,
+                    "title": "Olive Grove",
+                    "artist": "Sable",
+                    "genre": "Ambient",
+                    "duration_s": 261,
+                    "release_year": 2023
+                },
+                {
+                    "track_id": 7,
+                    "title": "Open Water",
+                    "artist": "Kemi Adeyemi",
+                    "genre": "Jazz",
+                    "duration_s": 312,
+                    "release_year": 2022
+                }
+            ]
+        }
+    }
+}

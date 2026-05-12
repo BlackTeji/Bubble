@@ -1,0 +1,75 @@
+{
+    "slug": "types-of-data",
+    "title": "Types of data",
+    "type": "concept",
+    "estimatedMins": 5,
+    "xpReward": 10,
+    "content": {
+        "intro": "Not all data is the same. Understanding what kind of data you're working with is the first step in knowing how to analyse it.",
+        "blocks": [
+            {
+                "type": "text",
+                "content": "Data comes in two broad categories: quantitative and qualitative. Understanding the difference shapes every decision you make — how you visualise, how you aggregate, how you draw conclusions."
+            },
+            {
+                "type": "comparison",
+                "left": {
+                    "label": "Quantitative",
+                    "description": "Data expressed as numbers. Can be measured, added, averaged.",
+                    "examples": [
+                        "Revenue: £42,000",
+                        "User count: 1,847",
+                        "Load time: 2.3 seconds"
+                    ]
+                },
+                "right": {
+                    "label": "Qualitative",
+                    "description": "Data expressed as categories or descriptions. Describes qualities, not quantities.",
+                    "examples": [
+                        "Customer feedback: 'The checkout was confusing'",
+                        "Product category: Electronics",
+                        "Status: Active"
+                    ]
+                }
+            },
+            {
+                "type": "callout",
+                "variant": "insight",
+                "content": "Most datasets contain both. A customer record might have an ID (quantitative), a name (qualitative), a sign-up date (quantitative), and a preferred language (qualitative)."
+            },
+            {
+                "type": "text",
+                "content": "Quantitative data splits further into two types:"
+            },
+            {
+                "type": "list",
+                "items": [
+                    {
+                        "label": "Discrete",
+                        "detail": "Countable whole numbers. You can have 3 customers, not 3.5 customers."
+                    },
+                    {
+                        "label": "Continuous",
+                        "detail": "Measurable values on a scale. Revenue can be £42,317.83 — any value is valid."
+                    }
+                ]
+            },
+            {
+                "type": "quiz",
+                "question": "A dataset records the following for each customer: age, country, number of purchases, and satisfaction rating (1–5). Which of these is qualitative?",
+                "options": [
+                    "Age",
+                    "Country",
+                    "Number of purchases",
+                    "Satisfaction rating"
+                ],
+                "correct": 1,
+                "explanation": "Country is a category — it describes a quality, not a quantity. Age, purchases, and satisfaction rating are all numeric and quantitative."
+            }
+        ],
+        "completion": {
+            "xpReward": 10,
+            "nextLessonSlug": "reading-a-dataset"
+        }
+    }
+}

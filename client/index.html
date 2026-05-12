@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bubble — Learn Data Analytics</title>
+    <meta name="description"
+        content="Bubble teaches data analytics from beginner to advanced through interactive lessons, real challenges, and an AI learning companion. Start for free.">
+    <meta name="keywords"
+        content="data analytics course, learn SQL, data science for beginners, interactive learning, online analytics course">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yourdomain.com/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com/">
+    <meta property="og:title" content="Bubble — Learn Data Analytics">
+    <meta property="og:description"
+        content="An emotionally intelligent learning platform that turns complete beginners into confident data analysts.">
+    <meta property="og:image" content="/assets/images/og-image.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bubble — Learn Data Analytics">
+    <meta name="twitter:description"
+        content="Interactive data analytics learning, guided by Lilibet your AI companion.">
+
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="/assets/css/reset.css">
+    <link rel="stylesheet" href="/assets/css/tokens.css">
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/animations.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <script type="module" src="/src/pages/index.js"></script>
+    <script>
+        window.addEventListener('error', (e) => {
+            if (document.getElementById('page-root')?.innerHTML === '') {
+                document.getElementById('page-root').innerHTML =
+                    '<div style="padding:3rem;text-align:center;color:#5B5775;font-family:system-ui,sans-serif">' +
+                    '<p style="font-size:1.125rem;margin-bottom:0.5rem">Something went wrong loading the page.</p>' +
+                    '<p style="font-size:0.875rem"><a href="/" style="color:#6C63FF">Return to start</a></p></div>';
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <main id="main-content" class="page-wrapper">
+            <div id="page-root"></div>
+        </main>
+    </div>
+
+    <div id="toast-container" aria-live="polite" aria-atomic="false"></div>
+    <div id="modal-container"></div>
+    <div id="celebration-container" aria-hidden="true"></div>
+</body>
+
+</html>

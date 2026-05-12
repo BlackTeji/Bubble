@@ -1,0 +1,67 @@
+{
+    "slug": "your-first-sql-query",
+    "title": "Your first SQL query",
+    "type": "challenge",
+    "estimatedMins": 8,
+    "xpReward": 25,
+    "content": {
+        "intro": "SQL is the language analysts use to ask questions of databases. Your first query is just four words.",
+        "blocks": [
+            {
+                "type": "text",
+                "content": "SQL stands for Structured Query Language. It is how you ask a database a question. Every SQL query starts the same way: you tell the database what columns you want to see, and where to find them."
+            },
+            {
+                "type": "code",
+                "lang": "sql",
+                "label": "The most basic query",
+                "code": "SELECT *\nFROM orders;"
+            },
+            {
+                "type": "callout",
+                "variant": "insight",
+                "content": "SELECT means 'give me these columns'. The asterisk * means 'all columns'. FROM tells the database which table to look in. The semicolon ends the statement."
+            },
+            {
+                "type": "text",
+                "content": "You rarely want all columns. More often you specify exactly which ones matter:"
+            },
+            {
+                "type": "code",
+                "lang": "sql",
+                "label": "Selecting specific columns",
+                "code": "SELECT customer_id, amount, status\nFROM orders;"
+            },
+            {
+                "type": "text",
+                "content": "The order you list columns in SELECT is the order they appear in your results. The database doesn't care — you're just choosing what to see."
+            },
+            {
+                "type": "quiz",
+                "question": "Which SQL query would show only the product and amount columns from an orders table?",
+                "options": [
+                    "FROM orders SELECT product, amount;",
+                    "SELECT product, amount FROM orders;",
+                    "SELECT * FROM orders WHERE product, amount;",
+                    "GET product, amount FROM orders;"
+                ],
+                "correct": 1,
+                "explanation": "SQL follows a fixed order: SELECT (what columns) then FROM (which table). The other options either reverse this order or use invalid syntax."
+            },
+            {
+                "type": "fill",
+                "instruction": "Complete the query to select the customer_id and status from the orders table:",
+                "template": "SELECT customer_id, ___\n___ orders;",
+                "blanks": [
+                    "status",
+                    "FROM"
+                ],
+                "hint": "The second blank is the keyword that tells SQL where to find the data."
+            }
+        ],
+        "completion": {
+            "xpReward": 25,
+            "nextLessonSlug": "filtering-with-where"
+        }
+    }
+}

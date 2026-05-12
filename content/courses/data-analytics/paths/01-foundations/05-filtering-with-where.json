@@ -1,0 +1,82 @@
+{
+    "slug": "filtering-with-where",
+    "title": "Filtering with WHERE",
+    "type": "challenge",
+    "estimatedMins": 8,
+    "xpReward": 25,
+    "content": {
+        "intro": "A SELECT query returns everything. A WHERE clause returns only what you need. This is where SQL starts to feel powerful.",
+        "blocks": [
+            {
+                "type": "text",
+                "content": "Most datasets are too large to read row by row. WHERE is how you narrow them down. You tell the database a condition, and it only returns rows where that condition is true."
+            },
+            {
+                "type": "code",
+                "lang": "sql",
+                "label": "Filter to completed orders only",
+                "code": "SELECT customer_id, amount\nFROM orders\nWHERE status = 'completed';"
+            },
+            {
+                "type": "callout",
+                "variant": "tip",
+                "content": "String values go inside single quotes. Numbers do not. WHERE amount = 100 is correct. WHERE status = completed (without quotes) will cause an error."
+            },
+            {
+                "type": "text",
+                "content": "WHERE supports several comparison operators:"
+            },
+            {
+                "type": "list",
+                "items": [
+                    {
+                        "label": "=",
+                        "detail": "Equal to. WHERE status = 'completed'"
+                    },
+                    {
+                        "label": "!=  or  <>",
+                        "detail": "Not equal to. WHERE status != 'cancelled'"
+                    },
+                    {
+                        "label": "> and <",
+                        "detail": "Greater or less than. WHERE amount > 100"
+                    },
+                    {
+                        "label": "BETWEEN",
+                        "detail": "Within a range. WHERE amount BETWEEN 50 AND 200"
+                    },
+                    {
+                        "label": "IN",
+                        "detail": "Matches any value in a list. WHERE status IN ('completed', 'pending')"
+                    }
+                ]
+            },
+            {
+                "type": "quiz",
+                "question": "You want to find all orders where the amount is more than £500. Which WHERE clause is correct?",
+                "options": [
+                    "WHERE amount = >500",
+                    "WHERE amount => 500",
+                    "WHERE amount > 500",
+                    "WHERE amount OVER 500"
+                ],
+                "correct": 2,
+                "explanation": "The greater-than operator is simply >. SQL doesn't use => or = > — those are not valid syntax. OVER is a window function keyword, not a comparison operator."
+            },
+            {
+                "type": "fill",
+                "instruction": "Write a query to find all cancelled orders showing just the order_id and customer_id:",
+                "template": "SELECT order_id, customer_id\nFROM orders\n___ status ___ 'cancelled';",
+                "blanks": [
+                    "WHERE",
+                    "="
+                ],
+                "hint": "WHERE comes after FROM. String values need single quotes."
+            }
+        ],
+        "completion": {
+            "xpReward": 25,
+            "nextLessonSlug": "counting-with-sql"
+        }
+    }
+}
