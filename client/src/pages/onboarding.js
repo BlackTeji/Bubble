@@ -100,8 +100,11 @@ const render = () => {
         </div>
 
         <div class="lilibet-message onboarding-lilibet">
-          <div class="lilibet-avatar" aria-hidden="true">L</div>
-          <p class="lilibet-text">${step.lilibet}</p>
+          <div class="lilibet-avatar"><img src="/assets/icons/lilibet-avatar.svg" alt="Lilibet" width="52" height="52"></div>
+          <div class="lilibet-body">
+            <span class="lilibet-name">Lilibet</span>
+            <p class="lilibet-text">${step.lilibet}</p>
+          </div>
         </div>
 
         <h1 class="onboarding-title">${step.title}</h1>

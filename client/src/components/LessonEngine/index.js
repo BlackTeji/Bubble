@@ -8,6 +8,7 @@ import { slideUp, floatXP } from '../../utils/animations.js';
 import { handleSubmissionResult } from '../../services/celebrationService.js';
 import { showToast } from '../Toast/index.js';
 import { navigateTo } from '../../utils/transitions.js';
+import { playCorrect, playWrong, playComplete } from '../../utils/sounds.js';
 
 // ─── Block renderers ──────────────────────────────────────────────────────────
 
@@ -167,8 +168,11 @@ export const mountLessonEngine = (container, lesson, options = {}) => {
       ${content.intro ? `
         <div class="lesson-intro">
           <div class="lilibet-message">
-            <div class="lilibet-avatar" aria-hidden="true">L</div>
-            <p class="lilibet-text">${getMessage('lesson_start', {})}</p>
+            <div class="lilibet-avatar"><img src="/assets/icons/lilibet-avatar.svg" alt="Lilibet" width="52" height="52"></div>
+            <div class="lilibet-body">
+              <span class="lilibet-name">Lilibet</span>
+              <p class="lilibet-text">${getMessage('lesson_start', {})}</p>
+            </div>
           </div>
           <p class="lesson-intro-text">${content.intro}</p>
         </div>
@@ -200,7 +204,6 @@ const bindLessonInteractions = (container, lesson, options = {}) => {
         }
     };
 
-    
     quizBlocks.forEach((quizEl) => {
         let answered = false;
 
@@ -227,6 +230,8 @@ const bindLessonInteractions = (container, lesson, options = {}) => {
                 btn.disabled = true;
             });
 
+            if (isCorrect) playCorrect(); else playWrong();
+
             const feedbackEl = container.querySelector(`#quiz-feedback-${blockIndex}`);
             if (feedbackEl) {
                 feedbackEl.innerHTML = `<span class="${isCorrect ? 'feedback--correct' : 'feedback--wrong'}">${isCorrect ? '✓ Correct' : '✗ Not quite'}</span>`;
@@ -245,8 +250,11 @@ const bindLessonInteractions = (container, lesson, options = {}) => {
                 const message = getMessage(isCorrect ? 'quiz_correct' : 'quiz_wrong', { isCorrect, attempts: 1 });
                 lilibetEl.innerHTML = `
           <div class="lilibet-message animate-fade-in-up">
-            <div class="lilibet-avatar" aria-hidden="true">L</div>
-            <p class="lilibet-text">${message}</p>
+            <div class="lilibet-avatar"><img src="/assets/icons/lilibet-avatar.svg" alt="Lilibet" width="52" height="52"></div>
+            <div class="lilibet-body">
+              <span class="lilibet-name">Lilibet</span>
+              <p class="lilibet-text">${message}</p>
+            </div>
           </div>
         `;
             }
@@ -334,6 +342,7 @@ const submitLessonCompletion = async (lesson, btn, options = {}) => {
 
         btn.textContent = '✓ Completed';
         btn.classList.add('btn-success');
+        playComplete();
 
         options.onCompleted?.();
     } catch {

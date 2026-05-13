@@ -535,55 +535,6 @@ const addLessonStyles = () => {
     }
 
 
-    /* ── Next-lesson prompt (appears after completion) ────────────────────── */
-
-    .lesson-next-prompt {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-3);
-      padding: var(--space-4) var(--space-5);
-      background: var(--color-success-light);
-      border: 1.5px solid var(--color-success);
-      border-radius: var(--radius-lg);
-      margin-top: var(--space-4);
-      animation: fadeInUp var(--duration-slow) var(--ease-spring) both;
-    }
-
-    @media (min-width: 640px) {
-      .lesson-next-prompt {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
-    }
-
-    .lesson-next-prompt-text {
-      font-size: var(--text-sm);
-      font-weight: var(--weight-medium);
-      color: var(--color-success-dark);
-    }
-
-    .lesson-next-prompt-btn {
-      flex-shrink: 0;
-      font-size: var(--text-sm);
-      padding: var(--space-3) var(--space-5);
-      background: var(--color-success);
-      color: #fff;
-      border-radius: var(--radius-full);
-      font-weight: var(--weight-semibold);
-      transition: all var(--duration-fast) var(--ease-smooth);
-      text-align: center;
-      min-height: 44px;
-      width: 100%;
-    }
-
-    @media (min-width: 640px) {
-      .lesson-next-prompt-btn { width: auto; margin-left: var(--space-4); }
-    }
-
-    .lesson-next-prompt-btn:hover { background: var(--color-success-dark); }
-
-
     /* ── Sidebar lesson cards ─────────────────────────────────────────────── */
 
     .lesson-card {
@@ -677,20 +628,7 @@ const onLessonCompleted = (actionsEl, nav) => {
         nextBtn.setAttribute('aria-disabled', 'false');
     }
 
-    if (nav.next && !actionsEl.querySelector('.lesson-next-prompt')) {
-        const prompt = document.createElement('div');
-        prompt.className = 'lesson-next-prompt';
-        prompt.innerHTML = `
-      <span class="lesson-next-prompt-text">Up next: ${nav.next.title}</span>
-      <button class="lesson-next-prompt-btn" type="button" id="nav-next-prompt-btn">
-        Continue →
-      </button>
-    `;
-        actionsEl.appendChild(prompt);
-        prompt.querySelector('#nav-next-prompt-btn')?.addEventListener('click', () => {
-            navigateTo(lessonUrl(nav.next.id));
-        });
-    }
+
 };
 
 // ─── Page loader ──────────────────────────────────────────────────────────────
@@ -780,13 +718,7 @@ const loadLesson = async () => {
               </button>
             ` : ''}
             ${nav ? renderLessonNav(nav, alreadyCompleted) : ''}
-            ${alreadyCompleted && nav?.next ? `
-              <div class="lesson-next-prompt">
-                <span class="lesson-next-prompt-text">Up next: ${nav.next.title}</span>
-                <button class="lesson-next-prompt-btn" type="button" id="nav-next-prompt-btn">
-                  Continue →
-                </button>
-              </div>` : ''}
+
           </div>
         </div>
       </div>
@@ -799,11 +731,7 @@ const loadLesson = async () => {
             onCompleted: () => onLessonCompleted(actionsEl, nav),
         });
 
-        if (alreadyCompleted && nav?.next) {
-            actionsEl.querySelector('#nav-next-prompt-btn')?.addEventListener('click', () => {
-                navigateTo(lessonUrl(nav.next.id));
-            });
-        }
+
 
         if (nav) bindNavButtons(actionsEl, nav);
 

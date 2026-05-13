@@ -33,8 +33,11 @@ const renderDashboard = ({ user, gamification, courses }) => {
 
       <section class="dashboard-hero animate-fade-in-up">
         <div class="lilibet-message">
-          <div class="lilibet-avatar" aria-hidden="true">L</div>
-          <p class="lilibet-text">${greeting}</p>
+          <div class="lilibet-avatar"><img src="/assets/icons/lilibet-avatar.svg" alt="Lilibet" width="52" height="52"></div>
+          <div class="lilibet-body">
+            <span class="lilibet-name">Lilibet</span>
+            <p class="lilibet-text">${greeting}</p>
+          </div>
         </div>
 
         <div class="dashboard-stats">
