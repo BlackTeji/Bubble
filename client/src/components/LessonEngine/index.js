@@ -9,6 +9,8 @@ import { handleSubmissionResult } from '../../services/celebrationService.js';
 import { showToast } from '../Toast/index.js';
 import { navigateTo } from '../../utils/transitions.js';
 
+// ─── Block renderers ──────────────────────────────────────────────────────────
+
 const BLOCK_RENDERERS = {
     text: renderTextBlock,
     callout: renderCalloutBlock,
@@ -110,8 +112,8 @@ function renderQuizBlock({ question, options, correct, explanation }, blockIndex
           </button>
         `).join('')}
       </div>
-      <div class="quiz-feedback" id="quiz-feedback-${blockIndex}" aria-live="polite" hidden></div>
-      <div class="quiz-explanation" id="quiz-explanation-${blockIndex}" hidden>
+      <div class="quiz-feedback quiz-feedback--hidden" id="quiz-feedback-${blockIndex}" aria-live="polite"></div>
+      <div class="quiz-explanation quiz-explanation--hidden" id="quiz-explanation-${blockIndex}">
         <p>${explanation ?? ''}</p>
       </div>
     </div>
@@ -154,13 +156,12 @@ export const renderBlocks = (blocks) => {
     }).join('');
 };
 
+// ─── Engine mount ─────────────────────────────────────────────────────────────
+
 export const mountLessonEngine = (container, lesson, options = {}) => {
     const content = lesson.content_json;
     if (!content) return;
 
-    // Renders only the lesson content — the actions section (complete button,
-    // nav, Lilibet slot) is owned and rendered by lesson.js so navigation
-    // can live alongside it without this component needing to know about routing.
     container.innerHTML = `
     <article class="lesson-content" aria-label="${lesson.title}">
       ${content.intro ? `
@@ -181,15 +182,17 @@ export const mountLessonEngine = (container, lesson, options = {}) => {
     bindLessonInteractions(container, lesson, options);
 };
 
+// ─── Interaction binding ──────────────────────────────────────────────────────
+
 const bindLessonInteractions = (container, lesson, options = {}) => {
     let quizzesAnswered = 0;
     let fillsSubmitted = 0;
+
     const quizBlocks = container.querySelectorAll('.quiz-block');
     const fillBlocks = container.querySelectorAll('.fill-block');
     const totalInteractives = quizBlocks.length + fillBlocks.length;
 
     const checkCompletion = () => {
-        // If already completed, the complete button is hidden — nothing to unlock
         if (options.alreadyCompleted) return;
         if (quizzesAnswered + fillsSubmitted >= totalInteractives) {
             const btn = document.getElementById('lesson-complete-btn');
@@ -197,57 +200,59 @@ const bindLessonInteractions = (container, lesson, options = {}) => {
         }
     };
 
+    
     quizBlocks.forEach((quizEl) => {
         let answered = false;
 
-        quizEl.querySelectorAll('.quiz-option').forEach((optBtn) => {
-            optBtn.addEventListener('click', async () => {
-                if (answered) return;
-                answered = true;
+        quizEl.addEventListener('click', (e) => {
+            if (answered) return;
 
-                const selectedIndex = parseInt(optBtn.dataset.index, 10);
-                const correctIndex = parseInt(quizEl.dataset.correct, 10);
-                const blockIndex = quizEl.dataset.blockIndex;
-                const isCorrect = selectedIndex === correctIndex;
+            const optBtn = e.target.closest('.quiz-option');
+            if (!optBtn || optBtn.disabled) return;
 
-                quizEl.querySelectorAll('.quiz-option').forEach((btn, i) => {
-                    btn.setAttribute('aria-checked', String(i === selectedIndex));
-                    btn.classList.add(i === correctIndex ? 'quiz-option--correct' : (i === selectedIndex ? 'quiz-option--wrong' : ''));
-                    btn.disabled = true;
-                });
+            answered = true;
 
-                const feedbackEl = container.querySelector(`#quiz-feedback-${blockIndex}`);
-                const explanationEl = container.querySelector(`#quiz-explanation-${blockIndex}`);
-                const lilibetEl = document.getElementById('lesson-lilibet-feedback');
+            const selectedIndex = parseInt(optBtn.dataset.index, 10);
+            const correctIndex = parseInt(quizEl.dataset.correct, 10);
+            const blockIndex = quizEl.dataset.blockIndex;
+            const isCorrect = selectedIndex === correctIndex;
 
-                const message = getMessage(isCorrect ? 'quiz_correct' : 'quiz_wrong', {
-                    isCorrect,
-                    attempts: 1,
-                });
-
-                if (feedbackEl) {
-                    feedbackEl.hidden = false;
-                    feedbackEl.innerHTML = `<span class="${isCorrect ? 'feedback--correct' : 'feedback--wrong'}">${isCorrect ? '✓ Correct' : '✗ Not quite'}</span>`;
-                    slideUp(feedbackEl);
+            quizEl.querySelectorAll('.quiz-option').forEach((btn, i) => {
+                btn.setAttribute('aria-checked', String(i === selectedIndex));
+                if (i === correctIndex) {
+                    btn.classList.add('quiz-option--correct');
+                } else if (i === selectedIndex) {
+                    btn.classList.add('quiz-option--wrong');
                 }
-
-                if (explanationEl) {
-                    explanationEl.hidden = false;
-                    slideUp(explanationEl);
-                }
-
-                if (lilibetEl) {
-                    lilibetEl.innerHTML = `
-            <div class="lilibet-message animate-fade-in-up">
-              <div class="lilibet-avatar" aria-hidden="true">L</div>
-              <p class="lilibet-text">${message}</p>
-            </div>
-          `;
-                }
-
-                quizzesAnswered++;
-                checkCompletion();
+                btn.disabled = true;
             });
+
+            const feedbackEl = container.querySelector(`#quiz-feedback-${blockIndex}`);
+            if (feedbackEl) {
+                feedbackEl.innerHTML = `<span class="${isCorrect ? 'feedback--correct' : 'feedback--wrong'}">${isCorrect ? '✓ Correct' : '✗ Not quite'}</span>`;
+                feedbackEl.classList.remove('quiz-feedback--hidden');
+                slideUp(feedbackEl);
+            }
+
+            const explanationEl = container.querySelector(`#quiz-explanation-${blockIndex}`);
+            if (explanationEl) {
+                explanationEl.classList.remove('quiz-explanation--hidden');
+                slideUp(explanationEl);
+            }
+
+            const lilibetEl = document.getElementById('lesson-lilibet-feedback');
+            if (lilibetEl) {
+                const message = getMessage(isCorrect ? 'quiz_correct' : 'quiz_wrong', { isCorrect, attempts: 1 });
+                lilibetEl.innerHTML = `
+          <div class="lilibet-message animate-fade-in-up">
+            <div class="lilibet-avatar" aria-hidden="true">L</div>
+            <p class="lilibet-text">${message}</p>
+          </div>
+        `;
+            }
+
+            quizzesAnswered++;
+            checkCompletion();
         });
     });
 
@@ -288,13 +293,13 @@ const bindLessonInteractions = (container, lesson, options = {}) => {
         });
     });
 
-    // Only bind the complete button on lessons not yet completed.
-    // Already-completed lessons show the next-prompt immediately; no re-submission needed.
     if (!options.alreadyCompleted) {
         const completeBtn = document.getElementById('lesson-complete-btn');
         completeBtn?.addEventListener('click', () => submitLessonCompletion(lesson, completeBtn, options));
     }
 };
+
+// ─── Lesson completion ────────────────────────────────────────────────────────
 
 const submitLessonCompletion = async (lesson, btn, options = {}) => {
     btn.disabled = true;
@@ -311,18 +316,11 @@ const submitLessonCompletion = async (lesson, btn, options = {}) => {
         progressStore.updateLesson(lesson.id, { status: 'completed', score: 100 });
         clientBus.emit(CLIENT_EVENTS.LESSON_COMPLETED, { lessonId: lesson.id });
 
-        // Refetch actual XP from server — the event handlers (xpHandler) run
-        // asynchronously after the submission response, so we wait briefly
-        // then pull the confirmed total rather than estimating client-side.
         setTimeout(async () => {
             try {
                 const gamResult = await http.get('/gamification/summary');
-                if (gamResult?.data?.xp !== undefined) {
-                    xpStore.setFromXP(gamResult.data.xp);
-                }
-            } catch {
-                // Non-critical — XP bar will update on next page load
-            }
+                if (gamResult?.data?.xp !== undefined) xpStore.setFromXP(gamResult.data.xp);
+            } catch { /* non-critical */ }
         }, 800);
 
         handleSubmissionResult({
@@ -338,19 +336,14 @@ const submitLessonCompletion = async (lesson, btn, options = {}) => {
         btn.classList.add('btn-success');
 
         options.onCompleted?.();
-
-        const nextSlug = lesson.content_json?.completion?.nextLessonSlug;
-        if (nextSlug) {
-            setTimeout(() => {
-                showToast({ message: 'Next lesson ready.', type: 'info' });
-            }, 1500);
-        }
-    } catch (err) {
+    } catch {
         btn.disabled = false;
         btn.textContent = 'Mark as complete';
         showToast({ message: 'Could not save progress. Please try again.', type: 'error' });
     }
 };
+
+// ─── Utility ──────────────────────────────────────────────────────────────────
 
 const escapeHtml = (str) =>
     str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

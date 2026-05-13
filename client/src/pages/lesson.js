@@ -27,8 +27,6 @@ const courseSlug = params.get('course') ?? 'data-analytics';
 const lessonUrl = (id) => `/lesson.html?id=${id}&course=${courseSlug}`;
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
-// Mobile-first: every base rule works at 320px.
-// min-width queries add layout complexity for wider screens.
 
 const addLessonStyles = () => {
     const style = document.createElement('style');
@@ -374,6 +372,7 @@ const addLessonStyles = () => {
 
     .quiz-option-text { font-size: var(--text-sm); line-height: var(--leading-snug); }
     .quiz-feedback    { margin-top: var(--space-4); font-size: var(--text-sm); font-weight: var(--weight-medium); }
+    .quiz-feedback--hidden { display: none; }
 
     .quiz-explanation {
       margin-top: var(--space-3);
@@ -384,7 +383,7 @@ const addLessonStyles = () => {
       background: var(--color-surface-2);
       border-radius: var(--radius-md);
     }
-
+    .quiz-explanation--hidden { display: none; }
 
     /* ── Fill in the blanks ───────────────────────────────────────────────── */
 
@@ -546,7 +545,7 @@ const addLessonStyles = () => {
       background: var(--color-success-light);
       border: 1.5px solid var(--color-success);
       border-radius: var(--radius-lg);
-      margin-bottom: var(--space-4);
+      margin-top: var(--space-4);
       animation: fadeInUp var(--duration-slow) var(--ease-spring) both;
     }
 
@@ -669,18 +668,15 @@ const bindNavButtons = (container, nav) => {
     });
 };
 
-// Called by the lesson engine after the learner marks a lesson complete.
 const onLessonCompleted = (actionsEl, nav) => {
     if (!actionsEl || !nav) return;
 
-    // Unlock the Next button
     const nextBtn = actionsEl.querySelector('#nav-next-btn');
     if (nextBtn) {
         nextBtn.disabled = false;
         nextBtn.setAttribute('aria-disabled', 'false');
     }
 
-    // Show the continue prompt above the nav
     if (nav.next && !actionsEl.querySelector('.lesson-next-prompt')) {
         const prompt = document.createElement('div');
         prompt.className = 'lesson-next-prompt';
@@ -690,7 +686,7 @@ const onLessonCompleted = (actionsEl, nav) => {
         Continue →
       </button>
     `;
-        actionsEl.querySelector('.lesson-nav')?.before(prompt);
+        actionsEl.appendChild(prompt);
         prompt.querySelector('#nav-next-prompt-btn')?.addEventListener('click', () => {
             navigateTo(lessonUrl(nav.next.id));
         });
@@ -711,7 +707,6 @@ const loadLesson = async () => {
     root.innerHTML = skeletonLesson();
 
     try {
-        // Lesson is critical. Navigation, progress, XP are non-critical.
         const [lessonResult, progressResult, gamResult, navResult] = await Promise.allSettled([
             http.get(`/lessons/${lessonId}`),
             http.get('/progress'),
@@ -776,24 +771,22 @@ const loadLesson = async () => {
 
           <div class="lesson-actions" id="lesson-actions">
             <div class="lesson-lilibet-feedback" id="lesson-lilibet-feedback"></div>
-            ${alreadyCompleted
-                ? /* Already done — no complete button, show next-prompt immediately if there's a next lesson */
-                (nav?.next ? `
-                  <div class="lesson-next-prompt">
-                    <span class="lesson-next-prompt-text">Up next: ${nav.next.title}</span>
-                    <button class="lesson-next-prompt-btn" type="button" id="nav-next-prompt-btn">
-                      Continue →
-                    </button>
-                  </div>` : '')
-                : /* Not yet completed — show the gated complete button */
-                `<button class="btn btn-primary lesson-complete-btn"
-                         id="lesson-complete-btn"
-                         type="button"
-                         disabled>
-                   Mark as complete
-                 </button>`
-            }
+            ${!alreadyCompleted ? `
+              <button class="btn btn-primary lesson-complete-btn"
+                      id="lesson-complete-btn"
+                      type="button"
+                      disabled>
+                Mark as complete
+              </button>
+            ` : ''}
             ${nav ? renderLessonNav(nav, alreadyCompleted) : ''}
+            ${alreadyCompleted && nav?.next ? `
+              <div class="lesson-next-prompt">
+                <span class="lesson-next-prompt-text">Up next: ${nav.next.title}</span>
+                <button class="lesson-next-prompt-btn" type="button" id="nav-next-prompt-btn">
+                  Continue →
+                </button>
+              </div>` : ''}
           </div>
         </div>
       </div>
@@ -806,7 +799,6 @@ const loadLesson = async () => {
             onCompleted: () => onLessonCompleted(actionsEl, nav),
         });
 
-        // If already completed, wire up the next-prompt button that was rendered above
         if (alreadyCompleted && nav?.next) {
             actionsEl.querySelector('#nav-next-prompt-btn')?.addEventListener('click', () => {
                 navigateTo(lessonUrl(nav.next.id));
