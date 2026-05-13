@@ -23,7 +23,7 @@ const renderPage = () => {
         </div>
 
         <div class="auth-lilibet lilibet-message">
-          <div class="lilibet-avatar" aria-hidden="true">L</div>
+          <div class="lilibet-avatar"><img src="/assets/icons/lilibet-avatar.png" alt="Lilibet" width="52" height="52"></div>
           <p class="lilibet-text">
             ${activeForm === 'login'
             ? 'Welcome back. You were in the middle of something.'

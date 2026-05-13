@@ -100,7 +100,7 @@ const render = () => {
         </div>
 
         <div class="lilibet-message onboarding-lilibet">
-          <div class="lilibet-avatar"><img src="/assets/icons/lilibet-avatar.svg" alt="Lilibet" width="52" height="52"></div>
+          <div class="lilibet-avatar"><img src="/assets/icons/lilibet-avatar.png" alt="Lilibet" width="52" height="52"></div>
           <div class="lilibet-body">
             <span class="lilibet-name">Lilibet</span>
             <p class="lilibet-text">${step.lilibet}</p>

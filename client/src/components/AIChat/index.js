@@ -45,7 +45,7 @@ export const mountHintPanel = (container, { lessonId, getUserCode }) => {
             if (responseEl) {
                 responseEl.innerHTML = `
           <div class="hint-message lilibet-message animate-fade-in-up">
-            <div class="lilibet-avatar" aria-hidden="true">L</div>
+            <div class="lilibet-avatar"><img src="/assets/icons/lilibet-avatar.png" alt="Lilibet" width="52" height="52"></div>
             <p class="lilibet-text">${result.hint}</p>
           </div>
         `;

@@ -2,7 +2,7 @@ import { slideUp } from '../../utils/animations.js';
 
 export const renderLilibetMessage = (message, tone = 'encouragement') => `
   <div class="lilibet-message lilibet-message--${tone}" role="status" aria-live="polite">
-    <div class="lilibet-avatar" aria-hidden="true">L</div>
+    <div class="lilibet-avatar"><img src="/assets/icons/lilibet-avatar.png" alt="Lilibet" width="52" height="52"></div>
     <p class="lilibet-text">${message}</p>
   </div>
 `;

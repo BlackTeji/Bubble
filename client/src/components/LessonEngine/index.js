@@ -168,7 +168,7 @@ export const mountLessonEngine = (container, lesson, options = {}) => {
       ${content.intro ? `
         <div class="lesson-intro">
           <div class="lilibet-message">
-            <div class="lilibet-avatar"><img src="/assets/icons/lilibet-avatar.svg" alt="Lilibet" width="52" height="52"></div>
+            <div class="lilibet-avatar"><img src="/assets/icons/lilibet-avatar.png" alt="Lilibet" width="52" height="52"></div>
             <div class="lilibet-body">
               <span class="lilibet-name">Lilibet</span>
               <p class="lilibet-text">${getMessage('lesson_start', {})}</p>
@@ -203,6 +203,7 @@ const bindLessonInteractions = (container, lesson, options = {}) => {
             if (btn) { btn.disabled = false; btn.classList.add('animate-bounce-in'); }
         }
     };
+
 
     quizBlocks.forEach((quizEl) => {
         let answered = false;
@@ -250,7 +251,7 @@ const bindLessonInteractions = (container, lesson, options = {}) => {
                 const message = getMessage(isCorrect ? 'quiz_correct' : 'quiz_wrong', { isCorrect, attempts: 1 });
                 lilibetEl.innerHTML = `
           <div class="lilibet-message animate-fade-in-up">
-            <div class="lilibet-avatar"><img src="/assets/icons/lilibet-avatar.svg" alt="Lilibet" width="52" height="52"></div>
+            <div class="lilibet-avatar"><img src="/assets/icons/lilibet-avatar.png" alt="Lilibet" width="52" height="52"></div>
             <div class="lilibet-body">
               <span class="lilibet-name">Lilibet</span>
               <p class="lilibet-text">${message}</p>
