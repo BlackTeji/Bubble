@@ -27,6 +27,8 @@ const courseSlug = params.get('course') ?? 'data-analytics';
 const lessonUrl = (id) => `/lesson.html?id=${id}&course=${courseSlug}`;
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
+// Mobile-first: every base rule works at 320px.
+// min-width queries add layout complexity for wider screens.
 
 const addLessonStyles = () => {
     const style = document.createElement('style');
@@ -667,15 +669,18 @@ const bindNavButtons = (container, nav) => {
     });
 };
 
+// Called by the lesson engine after the learner marks a lesson complete.
 const onLessonCompleted = (actionsEl, nav) => {
     if (!actionsEl || !nav) return;
 
+    // Unlock the Next button
     const nextBtn = actionsEl.querySelector('#nav-next-btn');
     if (nextBtn) {
         nextBtn.disabled = false;
         nextBtn.setAttribute('aria-disabled', 'false');
     }
 
+    // Show the continue prompt above the nav
     if (nav.next && !actionsEl.querySelector('.lesson-next-prompt')) {
         const prompt = document.createElement('div');
         prompt.className = 'lesson-next-prompt';
@@ -706,6 +711,7 @@ const loadLesson = async () => {
     root.innerHTML = skeletonLesson();
 
     try {
+        // Lesson is critical. Navigation, progress, XP are non-critical.
         const [lessonResult, progressResult, gamResult, navResult] = await Promise.allSettled([
             http.get(`/lessons/${lessonId}`),
             http.get('/progress'),
@@ -771,15 +777,15 @@ const loadLesson = async () => {
           <div class="lesson-actions" id="lesson-actions">
             <div class="lesson-lilibet-feedback" id="lesson-lilibet-feedback"></div>
             ${alreadyCompleted
-                ? 
+                ? /* Already done — no complete button, show next-prompt immediately if there's a next lesson */
                 (nav?.next ? `
                   <div class="lesson-next-prompt">
-                    <span class="lesson-next-prompt-text">Up next: \${nav.next.title}</span>
+                    <span class="lesson-next-prompt-text">Up next: ${nav.next.title}</span>
                     <button class="lesson-next-prompt-btn" type="button" id="nav-next-prompt-btn">
                       Continue →
                     </button>
                   </div>` : '')
-                : 
+                : /* Not yet completed — show the gated complete button */
                 `<button class="btn btn-primary lesson-complete-btn"
                          id="lesson-complete-btn"
                          type="button"
@@ -800,6 +806,7 @@ const loadLesson = async () => {
             onCompleted: () => onLessonCompleted(actionsEl, nav),
         });
 
+        // If already completed, wire up the next-prompt button that was rendered above
         if (alreadyCompleted && nav?.next) {
             actionsEl.querySelector('#nav-next-prompt-btn')?.addEventListener('click', () => {
                 navigateTo(lessonUrl(nav.next.id));
@@ -926,7 +933,6 @@ const loadLessonWithRetry = async () => {
     try {
         await loadLesson();
     } catch {
-
         await new Promise((resolve) => setTimeout(resolve, 600));
         await loadLesson();
     }
