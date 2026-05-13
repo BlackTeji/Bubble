@@ -5,38 +5,52 @@ const BASE_URL = '/api';
 let isRefreshing = false;
 let refreshQueue = [];
 
-const processQueue = (accessToken) => {
-    refreshQueue.forEach((resolve) => resolve(accessToken));
+const processQueue = (error, accessToken = null) => {
+    refreshQueue.forEach(({ resolve, reject }) => {
+        if (error) reject(error);
+        else resolve(accessToken);
+    });
     refreshQueue = [];
 };
 
-const attemptTokenRefresh = async () => {
+const attemptTokenRefresh = () => {
     if (isRefreshing) {
-        return new Promise((resolve) => refreshQueue.push(resolve));
+        return new Promise((resolve, reject) => {
+            refreshQueue.push({ resolve, reject });
+        });
     }
 
     isRefreshing = true;
 
-    try {
-        const response = await fetch(`${BASE_URL}/auth/refresh`, {
-            method: 'POST',
-            credentials: 'include',
+    return fetch(`${BASE_URL}/auth/refresh`, {
+        method: 'POST',
+        credentials: 'include',
+    })
+        .then(async (response) => {
+            if (!response.ok) {
+                storage.remove(ACCESS_TOKEN_KEY);
+                clientBus.emit(CLIENT_EVENTS.USER_LOGGED_OUT, {});
+                const err = new Error('Session expired');
+                processQueue(err, null);
+                throw err;
+            }
+
+            const body = await response.json();
+            const newToken = body?.data?.accessToken;
+
+            if (!newToken) {
+                const err = new Error('Refresh response missing token');
+                processQueue(err, null);
+                throw err;
+            }
+
+            storage.set(ACCESS_TOKEN_KEY, newToken);
+            processQueue(null, newToken);
+            return newToken;
+        })
+        .finally(() => {
+            isRefreshing = false;
         });
-
-        if (!response.ok) {
-            storage.remove(ACCESS_TOKEN_KEY);
-            clientBus.emit(CLIENT_EVENTS.USER_LOGGED_OUT, {});
-            throw new Error('Session expired');
-        }
-
-        const { data } = await response.json();
-        const newToken = data.accessToken;
-        storage.set(ACCESS_TOKEN_KEY, newToken);
-        processQueue(newToken);
-        return newToken;
-    } finally {
-        isRefreshing = false;
-    }
 };
 
 const request = async (path, options = {}, retry = true) => {
@@ -57,7 +71,7 @@ const request = async (path, options = {}, retry = true) => {
 
     if (response.status === 401 && retry) {
         try {
-            const newToken = await attemptTokenRefresh();
+            await attemptTokenRefresh();
             return request(path, options, false);
         } catch {
             throw new HttpError('Session expired. Please log in again.', 401, 'UNAUTHORIZED');

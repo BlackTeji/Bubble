@@ -771,6 +771,7 @@ const loadLesson = async () => {
           <div class="lesson-actions" id="lesson-actions">
             <div class="lesson-lilibet-feedback" id="lesson-lilibet-feedback"></div>
             ${alreadyCompleted
+                ? 
                 (nav?.next ? `
                   <div class="lesson-next-prompt">
                     <span class="lesson-next-prompt-text">Up next: \${nav.next.title}</span>
@@ -778,6 +779,7 @@ const loadLesson = async () => {
                       Continue →
                     </button>
                   </div>` : '')
+                : 
                 `<button class="btn btn-primary lesson-complete-btn"
                          id="lesson-complete-btn"
                          type="button"
@@ -920,4 +922,14 @@ const renderCourseLessonList = async (slug) => {
     }
 };
 
-loadLesson();
+const loadLessonWithRetry = async () => {
+    try {
+        await loadLesson();
+    } catch {
+
+        await new Promise((resolve) => setTimeout(resolve, 600));
+        await loadLesson();
+    }
+};
+
+loadLessonWithRetry();
